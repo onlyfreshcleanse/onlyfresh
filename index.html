@@ -1,0 +1,1927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0c1f14">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Only Fresh">
+<meta name="description" content="Only Fresh — Fresh food, detox juices & sattu. Hosur Road, Bengaluru.">
+<link rel="manifest" href="/manifest.json">
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NG8WXT581E"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-NG8WXT581E');
+
+  // Track chat messages
+  function trackChat(message) {
+    gtag('event', 'chat_message', {
+      'event_category': 'Freshy Chat',
+      'event_label': message.substring(0, 50)
+    });
+  }
+
+  // Track tab switches
+  function trackTab(tab) {
+    gtag('event', 'tab_view', {
+      'event_category': 'Navigation',
+      'event_label': tab
+    });
+  }
+
+  // Track menu item added to cart
+  function trackCart(item, price) {
+    gtag('event', 'add_to_cart', {
+      'event_category': 'Cart',
+      'event_label': item,
+      'value': price
+    });
+  }
+
+  // Track registration
+  function trackRegister(goal) {
+    gtag('event', 'sign_up', {
+      'event_category': 'Registration',
+      'event_label': goal || 'No goal'
+    });
+  }
+</script>
+<title>Only Fresh</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400;1,600&family=Cinzel:wght@400;600&family=DM+Sans:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c1f14;
+    --bg2: #101e16;
+    --green: #5aad72;
+    --green-deep: #2d7a4a;
+    --gold: #c9a255;
+    --cream: #f0ead8;
+    --mist: #a8c4b0;
+    --card: #142b1c;
+    --border: rgba(201,162,85,0.18);
+    --user-bubble: #1a3a24;
+    --bot-bubble: #142b1c;
+    --tab-h: 64px;
+    --header-h: 62px;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+  body {
+    background: var(--bg);
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    max-width: 480px;
+    margin: 0 auto;
+    position: relative;
+    overflow-x: hidden;
+    user-select: none;
+  }
+
+  /* ══ SCREENS ══ */
+  .screen { display:none; flex-direction:column; min-height:100vh; }
+  .screen.active { display:flex; }
+
+  /* ══ REGISTER SCREEN ══ */
+  #register {
+    background: radial-gradient(ellipse 80% 60% at 50% 30%, #163d26, #0c1f14 70%);
+    align-items: center;
+    justify-content: flex-start;
+    padding: 40px 24px 40px;
+    overflow-y: auto;
+    gap: 0;
+  }
+
+  .reg-top {
+    text-align: center;
+    margin-bottom: 28px;
+    width: 100%;
+  }
+
+  .reg-icon {
+    width: 64px; height: 64px;
+    border-radius: 18px;
+    background: radial-gradient(circle at 35% 35%, #a8e6be, #2d7a4a);
+    border: 1.5px solid rgba(201,162,85,0.4);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem;
+    margin: 0 auto 14px;
+    box-shadow: 0 0 30px rgba(90,173,114,0.3);
+  }
+
+  .reg-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.8rem;
+    color: var(--green);
+    text-shadow: 0 0 30px rgba(90,173,114,0.4);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .reg-sub {
+    font-size: 0.7rem;
+    font-weight: 300;
+    color: rgba(168,196,176,0.6);
+    letter-spacing: 0.04em;
+    line-height: 1.5;
+  }
+
+  .reg-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 24px 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .reg-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .reg-label {
+    font-size: 0.58rem;
+    font-weight: 400;
+    letter-spacing: 0.25em;
+    color: rgba(168,196,176,0.5);
+    text-transform: uppercase;
+  }
+
+  .reg-input, .reg-select {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(201,162,85,0.2);
+    border-radius: 12px;
+    padding: 13px 16px;
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 300;
+    outline: none;
+    transition: border-color 0.3s;
+    width: 100%;
+  }
+
+  .reg-input:focus, .reg-select:focus {
+    border-color: rgba(90,173,114,0.5);
+    background: rgba(90,173,114,0.04);
+  }
+
+  .reg-input::placeholder { color: rgba(168,196,176,0.3); }
+  .reg-select option { background: #142b1c; color: var(--cream); }
+
+  .reg-btn {
+    background: linear-gradient(135deg, #3d9458, #2d7a4a);
+    border: none;
+    border-radius: 14px;
+    padding: 15px;
+    color: white;
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(45,122,74,0.4);
+    transition: all 0.2s;
+    width: 100%;
+    margin-top: 4px;
+  }
+
+  .reg-btn:active { transform: scale(0.98); }
+
+  .reg-privacy {
+    font-size: 0.58rem;
+    font-weight: 300;
+    color: rgba(168,196,176,0.35);
+    text-align: center;
+    line-height: 1.5;
+    padding: 0 10px;
+  }
+
+  .reg-freshy-note {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    background: rgba(90,173,114,0.06);
+    border: 1px solid rgba(90,173,114,0.15);
+    border-radius: 12px;
+    padding: 12px;
+  }
+
+  .rfn-icon { font-size: 1.2rem; flex-shrink: 0; }
+  .rfn-text { font-size: 0.7rem; font-weight: 300; color: rgba(168,196,176,0.7); line-height: 1.5; }
+
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+  }
+    background: radial-gradient(ellipse 80% 60% at 50% 40%, #163d26, #0c1f14 70%);
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    animation: splashFade 0.5s ease;
+  }
+
+  @keyframes splashFade { from { opacity:0; } to { opacity:1; } }
+
+  .splash-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    animation: splashRise 1s ease forwards;
+  }
+
+  @keyframes splashRise {
+    from { opacity:0; transform:translateY(30px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+
+  .splash-icon {
+    width: 100px; height: 100px;
+    border-radius: 28px;
+    background: linear-gradient(145deg, #163d26, #0c1f14);
+    border: 1.5px solid rgba(201,162,85,0.4);
+    display: flex; align-items:center; justify-content:center;
+    font-size: 3rem;
+    box-shadow: 0 0 40px rgba(90,173,114,0.3), 0 20px 60px rgba(0,0,0,0.5);
+    animation: orbPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes orbPulse {
+    0%,100% { box-shadow: 0 0 40px rgba(90,173,114,0.3); }
+    50%      { box-shadow: 0 0 70px rgba(90,173,114,0.6); }
+  }
+
+  .splash-only { font-family:'Cinzel',serif; font-size:1.1rem; letter-spacing:0.5em; color:var(--cream); }
+  .splash-fresh { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:3.5rem; color:var(--green); text-shadow:0 0 40px rgba(90,173,114,0.5); line-height:1; }
+  .splash-tag { font-family:'DM Sans',sans-serif; font-weight:200; font-size:0.65rem; letter-spacing:0.35em; color:var(--mist); opacity:0.7; }
+
+  .splash-bar {
+    width: 160px; height: 3px;
+    background: var(--card);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 40px;
+  }
+
+  .splash-progress {
+    height: 100%;
+    background: linear-gradient(90deg, var(--green-deep), var(--green));
+    border-radius: 3px;
+    animation: loadBar 2.2s ease forwards;
+  }
+
+  @keyframes loadBar { from { width:0; } to { width:100%; } }
+
+  /* ══ HEADER ══ */
+  .app-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    height: var(--header-h);
+    background: linear-gradient(135deg, #081508, #0f2218);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 18px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  }
+
+  .header-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .header-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: radial-gradient(circle at 35% 35%, #a8e6be, #2d7a4a);
+    border: 1px solid rgba(201,162,85,0.4);
+    display: flex; align-items:center; justify-content:center;
+    font-size: 1.1rem;
+    box-shadow: 0 0 14px rgba(90,173,114,0.3);
+  }
+
+  .header-text { display:flex; flex-direction:column; }
+  .header-only { font-family:'Cinzel',serif; font-size:0.55rem; letter-spacing:0.4em; color:rgba(240,234,216,0.6); }
+  .header-fresh { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.2rem; color:var(--green); line-height:1; text-shadow:0 0 12px rgba(90,173,114,0.3); }
+
+  .header-right { display:flex; align-items:center; gap:10px; }
+
+  .notif-btn {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: rgba(90,173,114,0.1);
+    border: 1px solid rgba(90,173,114,0.2);
+    display: flex; align-items:center; justify-content:center;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+
+  /* ══ TAB BAR ══ */
+  .tab-bar {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 480px;
+    height: var(--tab-h);
+    background: linear-gradient(180deg, rgba(8,21,8,0.95), #081508);
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    z-index: 100;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  .tab-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    cursor: pointer;
+    padding: 8px 20px;
+    border-radius: 16px;
+    transition: all 0.2s;
+    position: relative;
+  }
+
+  .tab-item.active { background: rgba(90,173,114,0.12); }
+  .tab-icon { font-size: 1.3rem; transition: transform 0.2s; }
+  .tab-item.active .tab-icon { transform: scale(1.15); }
+  .tab-label { font-size: 0.55rem; font-weight: 300; letter-spacing: 0.05em; color: rgba(168,196,176,0.5); transition: color 0.2s; }
+  .tab-item.active .tab-label { color: var(--green); }
+
+  /* ══ SCROLLABLE CONTENT ══ */
+  .content {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: calc(var(--tab-h) + 16px);
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* ══ HOME SCREEN ══ */
+  .home-hero {
+    padding: 22px 18px 16px;
+    background: linear-gradient(180deg, #0f2218, var(--bg));
+    position: relative;
+    overflow: hidden;
+  }
+
+  .home-hero::before {
+    content: '';
+    position: absolute;
+    top: -30px; left: 50%;
+    transform: translateX(-50%);
+    width: 300px; height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(90,173,114,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .greet-row { display:flex; justify-content:space-between; align-items:flex-start; }
+  .greet-text { }
+  .greet-hi { font-size:0.7rem; font-weight:200; color:var(--mist); letter-spacing:0.08em; }
+  .greet-name { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.8rem; color:var(--cream); line-height:1.1; }
+  .greet-sub { font-size:0.65rem; font-weight:300; color:rgba(168,196,176,0.6); margin-top:2px; }
+
+  .freshy-bubble {
+    background: var(--card);
+    border: 1px solid rgba(90,173,114,0.2);
+    border-radius: 16px;
+    border-top-left-radius: 4px;
+    padding: 12px 14px;
+    margin-top: 16px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+
+  .freshy-bubble:hover { border-color: rgba(90,173,114,0.4); }
+  .fb-av { font-size:1.4rem; flex-shrink:0; }
+  .fb-text { flex:1; }
+  .fb-name { font-size:0.6rem; font-weight:400; color:var(--green); letter-spacing:0.08em; margin-bottom:3px; }
+  .fb-msg { font-size:0.8rem; font-weight:300; color:var(--cream); line-height:1.5; }
+  .fb-tap { font-size:0.6rem; color:rgba(168,196,176,0.4); margin-top:4px; }
+
+  /* Hero cards */
+  .section-title {
+    font-family: 'Cinzel', serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.45em;
+    color: rgba(168,196,176,0.4);
+    padding: 20px 18px 10px;
+    text-transform: uppercase;
+  }
+
+  .hero-scroll {
+    display: flex;
+    gap: 12px;
+    padding: 0 18px 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .hero-scroll::-webkit-scrollbar { display:none; }
+
+  .hero-card {
+    flex-shrink: 0;
+    width: 160px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-card::before {
+    content: '';
+    position: absolute;
+    top: -20px; right: -20px;
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(90,173,114,0.1) 0%, transparent 70%);
+  }
+
+  .hero-card:active { transform: scale(0.97); }
+  .hero-card.gold::before { background: radial-gradient(circle, rgba(201,162,85,0.1) 0%, transparent 70%); }
+
+  .hc-badge {
+    font-size: 0.48rem;
+    font-weight: 400;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--green);
+    background: rgba(90,173,114,0.1);
+    border: 1px solid rgba(90,173,114,0.25);
+    border-radius: 20px;
+    padding: 3px 8px;
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+
+  .hc-badge.gold-badge { color:var(--gold); background:rgba(201,162,85,0.1); border-color:rgba(201,162,85,0.25); }
+
+  .hc-icon { font-size: 1.8rem; margin-bottom: 8px; display:block; }
+  .hc-name { font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:400; color:var(--cream); line-height:1.1; margin-bottom:4px; }
+  .hc-desc { font-size:0.62rem; font-weight:300; color:rgba(168,196,176,0.6); line-height:1.4; margin-bottom:10px; }
+  .hc-price { font-size:0.75rem; font-weight:400; color:var(--gold); }
+
+  /* Quick actions */
+  .quick-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 0 18px;
+  }
+
+  .quick-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .quick-card:active { transform: scale(0.97); }
+  .qc-icon { font-size: 1.4rem; flex-shrink:0; }
+  .qc-text { }
+  .qc-title { font-size:0.75rem; font-weight:400; color:var(--cream); }
+  .qc-sub { font-size:0.58rem; font-weight:300; color:rgba(168,196,176,0.5); margin-top:1px; }
+
+  /* Nutrition tip */
+  .tip-card {
+    margin: 0 18px;
+    background: linear-gradient(135deg, #0f2a1a, #142b1c);
+    border: 1px solid rgba(201,162,85,0.2);
+    border-radius: 16px;
+    padding: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tip-card::before {
+    content: '💡';
+    position: absolute;
+    top: -10px; right: -5px;
+    font-size: 4rem;
+    opacity: 0.08;
+  }
+
+  .tip-label { font-size:0.52rem; letter-spacing:0.3em; color:var(--gold); text-transform:uppercase; margin-bottom:6px; }
+  .tip-text { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1rem; color:var(--cream); line-height:1.5; }
+  .tip-src { font-size:0.58rem; color:rgba(168,196,176,0.4); margin-top:6px; }
+
+  /* ══ MENU SCREEN ══ */
+  .menu-cats {
+    display: flex;
+    gap: 8px;
+    padding: 14px 18px 10px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    position: sticky;
+    top: var(--header-h);
+    background: var(--bg);
+    z-index: 10;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .menu-cats::-webkit-scrollbar { display:none; }
+
+  .cat-pill {
+    flex-shrink: 0;
+    font-size: 0.65rem;
+    font-weight: 300;
+    color: rgba(168,196,176,0.6);
+    border: 1px solid rgba(90,173,114,0.2);
+    border-radius: 20px;
+    padding: 6px 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .cat-pill.active {
+    background: var(--green);
+    color: #0c1f14;
+    border-color: var(--green);
+    font-weight: 500;
+  }
+
+  .menu-section { padding: 16px 18px 0; }
+  .menu-section-title {
+    font-family: 'Cinzel', serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.4em;
+    color: rgba(168,196,176,0.35);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+
+  .menu-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 10px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .menu-item:active { transform: scale(0.98); }
+  .menu-item.hero-item { border-color: rgba(201,162,85,0.3); }
+
+  .mi-icon { font-size:1.8rem; flex-shrink:0; }
+  .mi-info { flex:1; }
+  .mi-name { font-size:0.88rem; font-weight:400; color:var(--cream); margin-bottom:2px; }
+  .mi-desc { font-size:0.65rem; font-weight:300; color:rgba(168,196,176,0.55); line-height:1.4; }
+  .mi-tags { display:flex; gap:4px; flex-wrap:wrap; margin-top:5px; }
+  .mi-tag { font-size:0.5rem; color:var(--green); background:rgba(90,173,114,0.1); border:1px solid rgba(90,173,114,0.2); border-radius:10px; padding:2px 7px; }
+  .mi-tag.gold { color:var(--gold); background:rgba(201,162,85,0.1); border-color:rgba(201,162,85,0.2); }
+  .mi-right { display:flex; flex-direction:column; align-items:flex-end; gap:8px; flex-shrink:0; }
+  .mi-price { font-size:0.88rem; font-weight:400; color:var(--gold); }
+
+  .add-btn {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: var(--green);
+    border: none;
+    color: #0c1f14;
+    font-size: 1.2rem;
+    display: flex; align-items:center; justify-content:center;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .add-btn:active { transform: scale(0.9); background: var(--green-deep); }
+
+  /* ══ CHAT SCREEN ══ */
+  .chat-content {
+    flex: 1;
+    padding: 14px 14px 110px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .date-chip {
+    text-align: center;
+    font-size: 0.54rem;
+    letter-spacing: 0.3em;
+    color: rgba(168,196,176,0.3);
+    text-transform: uppercase;
+  }
+
+  .msg-row { display:flex; gap:8px; align-items:flex-end; animation: msgIn 0.3s ease; }
+  .msg-row.user { flex-direction:row-reverse; }
+
+  @keyframes msgIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+  .msg-av { width:28px; height:28px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:0.85rem; }
+  .msg-av.bot { background:radial-gradient(circle at 35% 35%, #a8e6be, #2d7a4a); border:1px solid rgba(201,162,85,0.3); }
+  .msg-av.usr { background:rgba(90,173,114,0.12); border:1px solid rgba(90,173,114,0.2); }
+
+  .bubble-wrap { display:flex; flex-direction:column; max-width:82%; }
+  .msg-row.user .bubble-wrap { align-items:flex-end; }
+
+  .bubble { padding:10px 14px; border-radius:18px; font-size:0.8rem; line-height:1.6; font-weight:300; }
+  .bubble.bot { background:var(--bot-bubble); border:1px solid rgba(90,173,114,0.15); border-bottom-left-radius:4px; color:var(--cream); }
+  .bubble.bot strong, .bubble.bot b { color:var(--green); font-weight:500; }
+  .bubble.bot em { color:var(--gold); font-style:normal; }
+  .bubble.user { background:var(--user-bubble); border:1px solid rgba(201,162,85,0.18); border-bottom-right-radius:4px; color:var(--cream); }
+  .msg-time { font-size:0.46rem; color:rgba(168,196,176,0.28); margin-top:2px; padding:0 2px; }
+
+  .typing-bubble { background:var(--bot-bubble); border:1px solid rgba(90,173,114,0.15); border-radius:18px; border-bottom-left-radius:4px; padding:12px 16px; display:flex; gap:5px; align-items:center; }
+  .dot { width:6px; height:6px; border-radius:50%; background:var(--green); animation:bounce 1.2s ease-in-out infinite; opacity:0.7; }
+  .dot:nth-child(2) { animation-delay:0.2s; }
+  .dot:nth-child(3) { animation-delay:0.4s; }
+  @keyframes bounce { 0%,60%,100% { transform:translateY(0); opacity:0.5; } 30% { transform:translateY(-6px); opacity:1; } }
+
+  .chips { display:flex; flex-wrap:wrap; gap:6px; padding:0 2px; }
+  .chip { font-size:0.66rem; font-weight:300; color:var(--green); border:1px solid rgba(90,173,114,0.28); border-radius:20px; padding:6px 12px; cursor:pointer; transition:all 0.2s; background:rgba(90,173,114,0.06); }
+  .chip:active { background:rgba(90,173,114,0.2); transform:scale(0.96); }
+  .chip.used { opacity:0.3; pointer-events:none; }
+
+  .chat-input-bar {
+    position: fixed;
+    bottom: var(--tab-h);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 480px;
+    background: linear-gradient(180deg, transparent, var(--bg) 30%);
+    padding: 8px 14px 12px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    z-index: 50;
+  }
+
+  .chat-input {
+    flex: 1;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(201,162,85,0.2);
+    border-radius: 22px;
+    padding: 10px 16px;
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 300;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+
+  .chat-input::placeholder { color:rgba(168,196,176,0.36); }
+  .chat-input:focus { border-color:rgba(90,173,114,0.45); }
+
+  .send-btn {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #3d9458, #2d7a4a);
+    border: none;
+    display: flex; align-items:center; justify-content:center;
+    font-size: 1rem; color:white;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(45,122,74,0.4);
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .send-btn:active { transform:scale(0.93); }
+  .send-btn:disabled { opacity:0.4; }
+
+  /* ══ NUTRITION SCREEN ══ */
+  .nutri-hero {
+    padding: 20px 18px 16px;
+    background: linear-gradient(180deg, #0f2218, var(--bg));
+  }
+
+  .nutri-title { font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:300; color:var(--cream); line-height:1.1; }
+  .nutri-title em { color:var(--green); font-style:italic; }
+  .nutri-sub { font-size:0.68rem; font-weight:300; color:rgba(168,196,176,0.6); margin-top:6px; }
+
+  .goal-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; padding:0 18px; }
+
+  .goal-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .goal-card:active { transform:scale(0.96); border-color:rgba(90,173,114,0.4); }
+  .gc-icon { font-size:1.6rem; margin-bottom:6px; display:block; }
+  .gc-name { font-size:0.8rem; font-weight:400; color:var(--cream); margin-bottom:3px; }
+  .gc-desc { font-size:0.6rem; font-weight:300; color:rgba(168,196,176,0.5); line-height:1.4; }
+
+  .nutri-card {
+    margin: 0 18px 12px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .nutri-card:active { transform:scale(0.98); }
+  .nc-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+  .nc-name { font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:400; color:var(--cream); }
+  .nc-icon { font-size:1.5rem; }
+  .nc-desc { font-size:0.7rem; font-weight:300; color:rgba(168,196,176,0.6); line-height:1.5; margin-bottom:10px; }
+  .nc-benefits { display:flex; flex-wrap:wrap; gap:5px; }
+  .nc-benefit { font-size:0.55rem; color:var(--green); background:rgba(90,173,114,0.1); border:1px solid rgba(90,173,114,0.2); border-radius:10px; padding:3px 8px; }
+
+  /* ══ CART / ORDER SCREEN ══ */
+  .cart-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 30px;
+    gap: 12px;
+    text-align: center;
+  }
+
+  .cart-empty-icon { font-size: 3rem; opacity: 0.4; }
+  .cart-empty-text { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.3rem; color:rgba(240,234,216,0.4); }
+  .cart-empty-sub { font-size:0.7rem; font-weight:300; color:rgba(168,196,176,0.3); }
+
+  .cart-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .ci-icon { font-size:1.6rem; flex-shrink:0; }
+  .ci-info { flex:1; }
+  .ci-name { font-size:0.85rem; font-weight:400; color:var(--cream); }
+  .ci-price { font-size:0.72rem; color:var(--gold); margin-top:2px; }
+  .ci-qty { display:flex; align-items:center; gap:10px; flex-shrink:0; }
+  .qty-btn { width:26px; height:26px; border-radius:50%; background:rgba(90,173,114,0.12); border:1px solid rgba(90,173,114,0.25); color:var(--green); font-size:1rem; display:flex; align-items:center; justify-content:center; cursor:pointer; }
+  .qty-num { font-size:0.85rem; font-weight:400; color:var(--cream); min-width:16px; text-align:center; }
+
+  .cart-summary {
+    margin: 16px 18px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+  }
+
+  .cs-row { display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.75rem; font-weight:300; color:rgba(168,196,176,0.6); }
+  .cs-row.total { font-size:0.9rem; font-weight:400; color:var(--cream); margin-top:10px; padding-top:10px; border-top:1px solid var(--border); margin-bottom:0; }
+  .cs-val { color:var(--cream); }
+  .cs-row.total .cs-val { color:var(--gold); font-weight:500; }
+
+  .order-btn {
+    margin: 0 18px 16px;
+    background: linear-gradient(135deg, #3d9458, #2d7a4a);
+    border: none;
+    border-radius: 14px;
+    padding: 16px;
+    width: calc(100% - 36px);
+    color: white;
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(45,122,74,0.4);
+    transition: all 0.2s;
+  }
+
+  .order-btn:active { transform:scale(0.98); }
+
+  /* ══ INSTALL BANNER ══ */
+  .install-banner {
+    display: none;
+    margin: 12px 18px 0;
+    background: linear-gradient(135deg, #163d26, #1a4a2e);
+    border: 1px solid rgba(201,162,85,0.3);
+    border-radius: 14px;
+    padding: 12px 14px;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .install-banner.show { display:flex; }
+  .ib-icon { font-size:1.4rem; flex-shrink:0; }
+  .ib-text { flex:1; }
+  .ib-title { font-size:0.75rem; font-weight:400; color:var(--cream); }
+  .ib-sub { font-size:0.6rem; font-weight:300; color:rgba(168,196,176,0.6); margin-top:1px; }
+  .ib-btn { background:var(--gold); color:#0c1f14; border:none; border-radius:8px; padding:6px 12px; font-size:0.65rem; font-weight:500; cursor:pointer; flex-shrink:0; font-family:'Cinzel',serif; letter-spacing:0.05em; }
+  .ib-close { color:rgba(168,196,176,0.4); font-size:1rem; cursor:pointer; flex-shrink:0; }
+
+  /* Animations */
+  .fade-in { animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+  .slide-up { animation: slideUp 0.3s ease; }
+  @keyframes slideUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+</style>
+</head>
+<body>
+
+<!-- ══ SPLASH SCREEN ══ -->
+<div id="splash" class="screen active">
+  <div class="splash-logo">
+    <div class="splash-icon">🌿</div>
+    <span class="splash-only">ONLY</span>
+    <span class="splash-fresh">Fresh</span>
+    <span class="splash-tag">Every sip, freshly made.</span>
+  </div>
+  <div class="splash-bar"><div class="splash-progress"></div></div>
+</div>
+
+<!-- ══ REGISTRATION SCREEN ══ -->
+<div id="register" class="screen">
+  <div class="reg-top">
+    <div class="reg-icon">🌿</div>
+    <div class="reg-title">Welcome to Only Fresh</div>
+    <div class="reg-sub">Tell Freshy a little about yourself<br>so we can personalise your experience</div>
+  </div>
+
+  <div class="reg-card">
+
+    <div class="reg-freshy-note">
+      <span class="rfn-icon">🌿</span>
+      <div class="rfn-text">Hi! I'm <strong style="color:#5aad72">Freshy</strong> — share your details and I'll give you personalised nutrition advice, health tips, and birthday offers from Only Fresh!</div>
+    </div>
+
+    <div class="reg-field">
+      <label class="reg-label">Your Name *</label>
+      <input class="reg-input" id="reg-name" type="text" placeholder="What should Freshy call you?" maxlength="40">
+    </div>
+
+    <div class="reg-field">
+      <label class="reg-label">WhatsApp Number *</label>
+      <input class="reg-input" id="reg-phone" type="tel" placeholder="10-digit mobile number" maxlength="10" pattern="[0-9]*" inputmode="numeric">
+    </div>
+
+    <div class="reg-field">
+      <label class="reg-label">Your Health Goal</label>
+      <select class="reg-select" id="reg-goal">
+        <option value="">Select your goal (optional)</option>
+        <option value="Weight Loss">⚖️ Weight Loss</option>
+        <option value="Gym & Muscle Gain">💪 Gym & Muscle Gain</option>
+        <option value="Energy & Focus">⚡ Energy & Focus</option>
+        <option value="Diabetes Management">🩺 Diabetes Management</option>
+        <option value="Immunity Boost">🛡️ Immunity Boost</option>
+        <option value="Skin Glow">✨ Skin Glow</option>
+        <option value="General Wellness">🌿 General Wellness</option>
+      </select>
+    </div>
+
+    <div class="reg-field">
+      <label class="reg-label">Birthday (for special offers 🎁)</label>
+      <input class="reg-input" id="reg-bday" type="date">
+    </div>
+
+    <button class="reg-btn" onclick="saveCustomer()">
+      🌿 &nbsp; Start Chatting with Freshy
+    </button>
+
+    <div class="reg-privacy">
+      🔒 Your details are private and only shared with Only Fresh.<br>
+      We will never spam you. Pinky promise! 🌿
+    </div>
+
+    <div style="text-align:center;margin-top:4px">
+      <span onclick="skipRegister()" style="font-size:0.65rem;font-weight:300;color:rgba(168,196,176,0.35);cursor:pointer;text-decoration:underline;letter-spacing:0.05em">
+        Skip for now — explore without registering
+      </span>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ MAIN APP ══ -->
+<div id="app" class="screen">
+
+  <!-- Header -->
+  <div class="app-header">
+    <div class="header-brand">
+      <div class="header-icon">🌿</div>
+      <div class="header-text">
+        <span class="header-only">ONLY</span>
+        <span class="header-fresh">Fresh</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="notif-btn" title="Notifications">🔔</div>
+    </div>
+  </div>
+
+  <!-- TAB CONTENTS -->
+
+  <!-- HOME TAB -->
+  <div id="tab-home" class="content fade-in">
+
+    <!-- Install banner -->
+    <div class="install-banner" id="installBanner">
+      <span class="ib-icon">📲</span>
+      <div class="ib-text">
+        <div class="ib-title">Add to Home Screen</div>
+        <div class="ib-sub">Use Only Fresh like an app — no download!</div>
+      </div>
+      <button class="ib-btn" onclick="installApp()">Install</button>
+      <span class="ib-close" onclick="document.getElementById('installBanner').classList.remove('show')">✕</span>
+    </div>
+
+    <!-- Hero section -->
+    <div class="home-hero">
+      <div class="greet-row">
+        <div class="greet-text">
+          <div class="greet-hi">Good morning 🌿</div>
+          <div class="greet-name">What would you<br>like today?</div>
+          <div class="greet-sub">Hosur Road · Kudlu Gate · Bengaluru</div>
+        </div>
+      </div>
+
+      <!-- Freshy bubble -->
+      <div class="freshy-bubble" onclick="switchTab('chat')">
+        <span class="fb-av">🌿</span>
+        <div class="fb-text">
+          <div class="fb-name">FRESHY · Your nutrition friend</div>
+          <div class="fb-msg">Hey! Try our <strong style="color:#5aad72">Sattu Power Shake</strong> today — 25g protein, keeps you full for hours. Perfect with the <strong style="color:#5aad72">Green Detox Juice</strong>! 💪</div>
+          <div class="fb-tap">Tap to chat with Freshy →</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero items -->
+    <div class="section-title">⭐ Hero Items</div>
+    <div class="hero-scroll">
+      <div class="hero-card" onclick="addToCart('Sattu Power Shake', 80, '🥛')">
+        <span class="hc-badge">⭐ Signature</span>
+        <span class="hc-icon">🥛</span>
+        <div class="hc-name">Sattu Power Shake</div>
+        <div class="hc-desc">25g protein · High fibre · Natural energy</div>
+        <div class="hc-price">₹80</div>
+      </div>
+      <div class="hero-card" onclick="addToCart('Green Detox Juice', 100, '🥤')">
+        <span class="hc-badge gold-badge">🌿 Detox</span>
+        <span class="hc-icon">🥤</span>
+        <div class="hc-name">Green Detox</div>
+        <div class="hc-desc">Cucumber · Spinach · Amla · Ginger</div>
+        <div class="hc-price">₹100</div>
+      </div>
+      <div class="hero-card" onclick="addToCart('Sattu Protein Bowl', 150, '🥗')">
+        <span class="hc-badge">💪 High Protein</span>
+        <span class="hc-icon">🥗</span>
+        <div class="hc-name">Protein Bowl</div>
+        <div class="hc-desc">Sattu · Sprouts · Seeds · Veggies</div>
+        <div class="hc-price">₹150</div>
+      </div>
+      <div class="hero-card" onclick="addToCart('Beetroot Boost', 110, '🍹')">
+        <span class="hc-badge gold-badge">⚡ Energy</span>
+        <span class="hc-icon">🍹</span>
+        <div class="hc-name">Beetroot Boost</div>
+        <div class="hc-desc">Beetroot · Carrot · Ginger · Lemon</div>
+        <div class="hc-price">₹110</div>
+      </div>
+      <div class="hero-card" onclick="addToCart('ABC Juice', 120, '🧃')">
+        <span class="hc-badge gold-badge">🌟 Popular</span>
+        <span class="hc-icon">🧃</span>
+        <div class="hc-name">ABC Juice</div>
+        <div class="hc-desc">Apple · Beetroot · Carrot · Fresh pressed</div>
+        <div class="hc-price">₹120</div>
+      </div>
+    </div>
+
+    <!-- Quick actions -->
+    <div class="section-title">Quick Actions</div>
+    <div class="quick-grid">
+      <div class="quick-card" onclick="switchTab('chat')">
+        <span class="qc-icon">🌿</span>
+        <div class="qc-text">
+          <div class="qc-title">Ask Freshy</div>
+          <div class="qc-sub">Nutrition advice</div>
+        </div>
+      </div>
+      <div class="quick-card" onclick="switchTab('menu')">
+        <span class="qc-icon">📋</span>
+        <div class="qc-text">
+          <div class="qc-title">Full Menu</div>
+          <div class="qc-sub">All items & prices</div>
+        </div>
+      </div>
+      <div class="quick-card" onclick="switchTab('nutrition')">
+        <span class="qc-icon">💪</span>
+        <div class="qc-text">
+          <div class="qc-title">Health Goals</div>
+          <div class="qc-sub">What to eat</div>
+        </div>
+      </div>
+      <div class="quick-card" onclick="switchTab('cart')">
+        <span class="qc-icon">🛒</span>
+        <div class="qc-text">
+          <div class="qc-title">My Order</div>
+          <div class="qc-sub" id="cartQuickSub">Cart is empty</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Daily tip -->
+    <div class="section-title">Today's Tip</div>
+    <div class="tip-card" style="margin-bottom:0">
+      <div class="tip-label">Freshy's Daily Tip</div>
+      <div class="tip-text" id="dailyTip">"Sattu in the morning keeps you full until lunch — no snacking, no energy crash. Try it for 7 days and feel the difference."</div>
+      <div class="tip-src">— Freshy, Only Fresh</div>
+    </div>
+
+    <div style="height:20px"></div>
+  </div>
+
+  <!-- MENU TAB -->
+  <div id="tab-menu" class="content fade-in" style="display:none">
+    <div class="menu-cats">
+      <div class="cat-pill active" onclick="filterMenu('all', this)">All</div>
+      <div class="cat-pill" onclick="filterMenu('sattu', this)">⭐ Sattu</div>
+      <div class="cat-pill" onclick="filterMenu('detox', this)">🥤 Detox Juices</div>
+      <div class="cat-pill" onclick="filterMenu('tiffin', this)">🍱 Tiffin</div>
+      <div class="cat-pill" onclick="filterMenu('bowls', this)">🥗 Bowls</div>
+      <div class="cat-pill" onclick="filterMenu('smoothies', this)">🥤 Smoothies</div>
+    </div>
+
+    <div id="menuContent">
+      <!-- Sattu -->
+      <div class="menu-section" data-cat="sattu">
+        <div class="menu-section-title">⭐ Sattu — Our Signature</div>
+        <div class="menu-item hero-item" onclick="addToCart('Sattu Power Shake', 80, '🥛')">
+          <span class="mi-icon">🥛</span>
+          <div class="mi-info">
+            <div class="mi-name">Sattu Power Shake</div>
+            <div class="mi-desc">Sweet or salted · 25g protein · Chilled</div>
+            <div class="mi-tags"><span class="mi-tag gold">⭐ Hero</span><span class="mi-tag">💪 High Protein</span><span class="mi-tag">⚡ Energy</span></div>
+          </div>
+          <div class="mi-right"><span class="mi-price">₹80</span><button class="add-btn" onclick="event.stopPropagation();addToCart('Sattu Power Shake',80,'🥛')">+</button></div>
+        </div>
+        <div class="menu-item hero-item" onclick="addToCart('Sattu Detox Drink', 70, '🍵')">
+          <span class="mi-icon">🍵</span>
+          <div class="mi-info">
+            <div class="mi-name">Sattu Detox Drink</div>
+            <div class="mi-desc">Sattu · Lemon · Jeera · Mint · Cooling</div>
+            <div class="mi-tags"><span class="mi-tag">🌿 Detox</span><span class="mi-tag">⚖️ Weight Loss</span></div>
+          </div>
+          <div class="mi-right"><span class="mi-price">₹70</span><button class="add-btn" onclick="event.stopPropagation();addToCart('Sattu Detox Drink',70,'🍵')">+</button></div>
+        </div>
+        <div class="menu-item hero-item" onclick="addToCart('Sattu Protein Bowl', 150, '🥗')">
+          <span class="mi-icon">🥗</span>
+          <div class="mi-info">
+            <div class="mi-name">Sattu Protein Bowl</div>
+            <div class="mi-desc">Sattu · Roasted veggies · Sprouts · Seeds</div>
+            <div class="mi-tags"><span class="mi-tag gold">⭐ Hero</span><span class="mi-tag">💪 Muscle</span></div>
+          </div>
+          <div class="mi-right"><span class="mi-price">₹150</span><button class="add-btn" onclick="event.stopPropagation();addToCart('Sattu Protein Bowl',150,'🥗')">+</button></div>
+        </div>
+        <div class="menu-item" onclick="addToCart('Sattu Paratha', 90, '🫓')">
+          <span class="mi-icon">🫓</span>
+          <div class="mi-info">
+            <div class="mi-name">Sattu Paratha</div>
+            <div class="mi-desc">With green chutney · Wholesome & filling</div>
+            <div class="mi-tags"><span class="mi-tag">🌿 Healthy</span></div>
+          </div>
+          <div class="mi-right"><span class="mi-price">₹90</span><button class="add-btn" onclick="event.stopPropagation();addToCart('Sattu Paratha',90,'🫓')">+</button></div>
+        </div>
+        <div class="menu-item" onclick="addToCart('Sattu Laddoo', 60, '🟤')">
+          <span class="mi-icon">🟤</span>
+          <div class="mi-info">
+            <div class="mi-name">Sattu Laddoo</div>
+            <div class="mi-desc">Energy balls · 2 pieces · Natural sweetness</div>
+            <div class="mi-tags"><span class="mi-tag">⚡ Energy</span><span class="mi-tag">🏋️ Gym</span></div>
+          </div>
+          <div class="mi-right"><span class="mi-price">₹60</span><button class="add-btn" onclick="event.stopPropagation();addToCart('Sattu Laddoo',60,'🟤')">+</button></div>
+        </div>
+      </div>
+
+      <!-- Detox Juices -->
+      <div class="menu-section" data-cat="detox">
+        <div class="menu-section-title">🥤 Detox Juices — Fresh Pressed</div>
+        <div class="menu-item hero-item" onclick="addToCart('Green Detox', 100, '🥤')">
+          <span class="mi-icon">🥤</span>
+          <div class="mi-info">
+            <div class="mi-name">Green Detox</div>
+            <div class="mi-desc">Cucumber · Spinach · Amla · Mint · Ginger</div>
+            <div class="mi-tags"><span class="mi-tag">🌿 Detox</span><span class="mi-tag">✨ Skin Glow</span></div>
+          </div>
+          <div class="mi-right"><span class="mi-price">₹100</span><button class="add-btn" onclick="event.stopPropagation();addToCart('Green Detox',100,'🥤')">+</button></div>
+        </div>
+        <div class="menu-item" onclick="addToCart('Beetroot Boost', 110, '🍹')">
+          <span class="mi-icon">🍹</span>
+          <div class="mi-info">
+            <div class="mi-name">Beetroot Boost</div>
+            <div class="mi-desc">Beetroot · Carrot · Ginger · Lemon</div>
+            <div class="mi-tags"><span class="mi-tag">⚡ Energy</span><span class="mi-tag">🏋️ Stamina</span></div>
+          </div>
+          <div class="mi-right"><span class="mi-price">₹110</span><button class="add-btn" onclick="event.stopPropagation();addToCart('Beetroot Boost',110,'🍹')">+</button></div>
+        </div>
+        <div class="menu-item" onclick="addToCart('Orange Glow', 90, '🍊')">
+          <span class="mi-icon">🍊</span>
+          <div class="mi-info">
+            <div class="mi-name">Orange Glow</div>
+            <div class="mi-desc">Fresh orange · Turmeric · Black pepper</div>
+            <div class="mi-tags"><span class="mi-tag">🛡️ Immunity</span></div>
+          </div>
+          <div class="mi-right"><span class="mi-price">₹90</span><button class="add-btn" onclick="event.stopPropagation();addToCart('Orange Glow',90,'🍊')">+</button></div>
+        </div>
+        <div class="menu-item" onclick="addToCart('Watermelon Mint', 80, '🍉')">
+          <span class="mi-icon">🍉</span>
+          <div class="mi-info">
+            <div class="mi-name">Watermelon Mint</div>
+            <div class="mi-desc">Watermelon · Mint · Lemon · Cooling</div>
+            <div class="mi-tags"><span class="mi-tag">❄️ Cooling</span></div>
+          </div>
+          <div class="mi-right"><span class="mi-price">₹80</span><button class="add-btn" onclick="event.stopPropagation();addToCart('Watermelon Mint',80,'🍉')">+</button></div>
+        </div>
+        <div class="menu-item" onclick="addToCart('ABC Juice', 120, '🧃')">
+          <span class="mi-icon">🧃</span>
+          <div class="mi-info">
+            <div class="mi-name">ABC Juice</div>
+            <div class="mi-desc">Apple · Beetroot · Carrot · Most popular</div>
+            <div class="mi-tags"><span class="mi-tag gold">🌟 Popular</span><span class="mi-tag">✨ Skin</span></div>
+          </div>
+          <div class="mi-right"><span class="mi-price">₹120</span><button class="add-btn" onclick="event.stopPropagation();addToCart('ABC Juice',120,'🧃')">+</button></div>
+        </div>
+        <div class="menu-item" onclick="addToCart('Wheatgrass Shot', 80, '🌱')">
+          <span class="mi-icon">🌱</span>
+          <div class="mi-info">
+            <div class="mi-name">Wheatgrass Shot</div>
+            <div class="mi-desc">Pure wheatgrass · 60ml · Daily immunity</div>
+            <div class="mi-tags"><span class="mi-tag">🛡️ Immunity</span><span class="mi-tag">⚡ Detox</span></div>
+          </div>
+          <div class="mi-right"><span class="mi-price">₹80</span><button class="add-btn" onclick="event.stopPropagation();addToCart('Wheatgrass Shot',80,'🌱')">+</button></div>
+        </div>
+        <div class="menu-item" onclick="addToCart('Karela Amla Detox', 110, '🥬')">
+          <span class="mi-icon">🥬</span>
+          <div class="mi-info">
+            <div class="mi-name">Karela Amla Detox</div>
+            <div class="mi-desc">Bitter gourd · Amla · Ginger · Diabetic friendly</div>
+            <div class="mi-tags"><span class="mi-tag">🩺 Diabetic</span><span class="mi-tag">🛡️ Immunity</span></div>
+          </div>
+          <div class="mi-right"><span class="mi-price">₹110</span><button class="add-btn" onclick="event.stopPropagation();addToCart('Karela Amla Detox',110,'🥬')">+</button></div>
+        </div>
+      </div>
+
+      <!-- Tiffin -->
+      <div class="menu-section" data-cat="tiffin">
+        <div class="menu-section-title">🍱 South Indian Tiffin</div>
+        <div class="menu-item" onclick="addToCart('Idli 2pcs', 60, '⚪')"><span class="mi-icon">⚪</span><div class="mi-info"><div class="mi-name">Idli (2 pcs)</div><div class="mi-desc">With sambar & chutney · Light & healthy</div></div><div class="mi-right"><span class="mi-price">₹60</span><button class="add-btn" onclick="event.stopPropagation();addToCart('Idli 2pcs',60,'⚪')">+</button></div></div>
+        <div class="menu-item" onclick="addToCart('Masala Dosa', 80, '🫓')"><span class="mi-icon">🫓</span><div class="mi-info"><div class="mi-name">Masala Dosa</div><div class="mi-desc">Crispy · Potato filling · Sambhar & chutney</div></div><div class="mi-right"><span class="mi-price">₹80</span><button class="add-btn" onclick="event.stopPropagation();addToCart('Masala Dosa',80,'🫓')">+</button></div></div>
+        <div class="menu-item" onclick="addToCart('Upma', 60, '🍚')"><span class="mi-icon">🍚</span><div class="mi-info"><div class="mi-name">Rava Upma</div><div class="mi-desc">Fresh veggies · Light · Morning special</div></div><div class="mi-right"><span class="mi-price">₹60</span><button class="add-btn" onclick="event.stopPropagation();addToCart('Upma',60,'🍚')">+</button></div></div>
+        <div class="menu-item" onclick="addToCart('Tiffin Combo', 100, '🍱')"><span class="mi-icon">🍱</span><div class="mi-info"><div class="mi-name">Mini Tiffin Combo</div><div class="mi-desc">2 Idli + 1 Vada + Sambar · Best value</div><div class="mi-tags"><span class="mi-tag gold">💰 Best Value</span></div></div><div class="mi-right"><span class="mi-price">₹100</span><button class="add-btn" onclick="event.stopPropagation();addToCart('Tiffin Combo',100,'🍱')">+</button></div></div>
+      </div>
+
+      <!-- Bowls -->
+      <div class="menu-section" data-cat="bowls">
+        <div class="menu-section-title">🥗 Fresh Bowls</div>
+        <div class="menu-item" onclick="addToCart('Garden Salad Bowl', 120, '🥗')"><span class="mi-icon">🥗</span><div class="mi-info"><div class="mi-name">Garden Fresh Salad</div><div class="mi-desc">Seasonal fresh veggies · Light dressing</div></div><div class="mi-right"><span class="mi-price">₹120</span><button class="add-btn" onclick="event.stopPropagation();addToCart('Garden Salad Bowl',120,'🥗')">+</button></div></div>
+        <div class="menu-item" onclick="addToCart('Sprouts Power Bowl', 110, '🌱')"><span class="mi-icon">🌱</span><div class="mi-info"><div class="mi-name">Sprouts Power Bowl</div><div class="mi-desc">Mixed sprouts · Lemon · Spices · Protein rich</div></div><div class="mi-right"><span class="mi-price">₹110</span><button class="add-btn" onclick="event.stopPropagation();addToCart('Sprouts Power Bowl',110,'🌱')">+</button></div></div>
+        <div class="menu-item" onclick="addToCart('Fruit Bowl', 130, '🍓')"><span class="mi-icon">🍓</span><div class="mi-info"><div class="mi-name">Fruit Bowl</div><div class="mi-desc">Seasonal fresh fruits · Natural vitamins</div></div><div class="mi-right"><span class="mi-price">₹130</span><button class="add-btn" onclick="event.stopPropagation();addToCart('Fruit Bowl',130,'🍓')">+</button></div></div>
+      </div>
+
+      <!-- Smoothies -->
+      <div class="menu-section" data-cat="smoothies">
+        <div class="menu-section-title">🥤 Smoothies & Hot Drinks</div>
+        <div class="menu-item" onclick="addToCart('Banana Oat Smoothie', 120, '🍌')"><span class="mi-icon">🍌</span><div class="mi-info"><div class="mi-name">Banana Oat Smoothie</div><div class="mi-desc">Banana · Oats · Natural filling smoothie</div></div><div class="mi-right"><span class="mi-price">₹120</span><button class="add-btn" onclick="event.stopPropagation();addToCart('Banana Oat Smoothie',120,'🍌')">+</button></div></div>
+        <div class="menu-item" onclick="addToCart('Mango Ginger Smoothie', 130, '🥭')"><span class="mi-icon">🥭</span><div class="mi-info"><div class="mi-name">Mango Ginger Smoothie</div><div class="mi-desc">Fresh mango · Ginger · Digestive boost</div></div><div class="mi-right"><span class="mi-price">₹130</span><button class="add-btn" onclick="event.stopPropagation();addToCart('Mango Ginger Smoothie',130,'🥭')">+</button></div></div>
+        <div class="menu-item" onclick="addToCart('Tulsi Kadha', 60, '☕')"><span class="mi-icon">☕</span><div class="mi-info"><div class="mi-name">Tulsi Kadha</div><div class="mi-desc">Immunity booster · Hot · Ayurvedic</div><div class="mi-tags"><span class="mi-tag">🛡️ Immunity</span></div></div><div class="mi-right"><span class="mi-price">₹60</span><button class="add-btn" onclick="event.stopPropagation();addToCart('Tulsi Kadha',60,'☕')">+</button></div></div>
+        <div class="menu-item" onclick="addToCart('Ginger Lemon Tea', 50, '🍵')"><span class="mi-icon">🍵</span><div class="mi-info"><div class="mi-name">Ginger Lemon Honey Tea</div><div class="mi-desc">Fresh ginger · Lemon · Raw honey</div></div><div class="mi-right"><span class="mi-price">₹50</span><button class="add-btn" onclick="event.stopPropagation();addToCart('Ginger Lemon Tea',50,'🍵')">+</button></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHAT TAB -->
+  <div id="tab-chat" class="content" style="display:none; padding-bottom:0;">
+    <div class="chat-content" id="chatArea">
+      <div class="date-chip">Today · Only Fresh</div>
+      <div class="msg-row bot">
+        <div class="msg-av bot">🌿</div>
+        <div class="bubble-wrap">
+          <div class="bubble bot">Hey! 👋 I'm <strong>Freshy</strong> — your nutrition friend at <em>Only Fresh</em>.<br><br>Ask me anything about food, health goals, or our menu. I'm here for you! 😊</div>
+          <div class="msg-time">Just now</div>
+        </div>
+      </div>
+      <div class="chips" id="startChips">
+        <div class="chip" onclick="quickSend(this,'What is sattu and why is it special?')">⭐ What is Sattu?</div>
+        <div class="chip" onclick="quickSend(this,'Tell me about your detox juices')">🥤 Detox Juices</div>
+        <div class="chip" onclick="quickSend(this,'I want to lose weight what should I have?')">💪 Weight Loss</div>
+        <div class="chip" onclick="quickSend(this,'What is good for gym and muscle gain?')">🏋️ Gym Nutrition</div>
+        <div class="chip" onclick="quickSend(this,'What makes Only Fresh different?')">✨ Why Only Fresh?</div>
+        <div class="chip" onclick="quickSend(this,'What are your timings and location?')">📍 Location & Hours</div>
+        <div class="chip" onclick="quickSend(this,'I have diabetes what should I eat?')">🩺 Diabetes friendly</div>
+      </div>
+    </div>
+    <div class="chat-input-bar">
+      <input class="chat-input" id="chatInput" type="text" placeholder="Ask Freshy anything…" onkeydown="if(event.key==='Enter')sendMsg()"/>
+      <button class="send-btn" id="sendBtn" onclick="sendMsg()">➤</button>
+    </div>
+  </div>
+
+  <!-- NUTRITION TAB -->
+  <div id="tab-nutrition" class="content fade-in" style="display:none">
+    <div class="nutri-hero">
+      <div class="nutri-title">Eat for your<br><em>goal.</em></div>
+      <div class="nutri-sub">Tap a goal — Freshy picks the right food for you</div>
+    </div>
+
+    <div class="section-title">Your Health Goal</div>
+    <div class="goal-grid" style="margin-bottom:16px;">
+      <div class="goal-card" onclick="goalChat('Weight loss — what should I eat at Only Fresh?')">
+        <span class="gc-icon">⚖️</span>
+        <div class="gc-name">Weight Loss</div>
+        <div class="gc-desc">Low cal, high satiety foods</div>
+      </div>
+      <div class="goal-card" onclick="goalChat('Gym and muscle gain — best items at Only Fresh?')">
+        <span class="gc-icon">💪</span>
+        <div class="gc-name">Gym & Muscle</div>
+        <div class="gc-desc">High protein, recovery food</div>
+      </div>
+      <div class="goal-card" onclick="goalChat('Best energy boosting food at Only Fresh?')">
+        <span class="gc-icon">⚡</span>
+        <div class="gc-name">Energy Boost</div>
+        <div class="gc-desc">Sustained natural energy</div>
+      </div>
+      <div class="goal-card" onclick="goalChat('Diabetic friendly food at Only Fresh?')">
+        <span class="gc-icon">🩺</span>
+        <div class="gc-name">Diabetes</div>
+        <div class="gc-desc">Low GI, sugar free options</div>
+      </div>
+      <div class="goal-card" onclick="goalChat('Best immunity boosting food at Only Fresh?')">
+        <span class="gc-icon">🛡️</span>
+        <div class="gc-name">Immunity</div>
+        <div class="gc-desc">Vitamins & antioxidants</div>
+      </div>
+      <div class="goal-card" onclick="goalChat('Best food for skin glow at Only Fresh?')">
+        <span class="gc-icon">✨</span>
+        <div class="gc-name">Skin Glow</div>
+        <div class="gc-desc">Natural beauty nutrition</div>
+      </div>
+    </div>
+
+    <div class="section-title">Why Sattu?</div>
+    <div class="nutri-card">
+      <div class="nc-top"><div class="nc-name">Sattu — Ancient Superfood</div><span class="nc-icon">⭐</span></div>
+      <div class="nc-desc">Roasted Bengal gram flour used by Indian wrestlers and athletes for centuries. Now trending globally as nature's perfect protein food.</div>
+      <div class="nc-benefits">
+        <span class="nc-benefit">25g protein/100g</span>
+        <span class="nc-benefit">High fibre</span>
+        <span class="nc-benefit">Low GI</span>
+        <span class="nc-benefit">Natural cooling</span>
+        <span class="nc-benefit">Diabetic safe</span>
+        <span class="nc-benefit">No additives</span>
+      </div>
+    </div>
+
+    <div class="section-title">Why Detox Juices?</div>
+    <div class="nutri-card">
+      <div class="nc-top"><div class="nc-name">Cold-Pressed Fresh Juices</div><span class="nc-icon">🥤</span></div>
+      <div class="nc-desc">Made fresh when you order. Zero sugar. Zero preservatives. Cold-pressing preserves maximum vitamins and live enzymes your body needs.</div>
+      <div class="nc-benefits">
+        <span class="nc-benefit">Zero sugar added</span>
+        <span class="nc-benefit">Made to order</span>
+        <span class="nc-benefit">Live enzymes</span>
+        <span class="nc-benefit">Max vitamins</span>
+        <span class="nc-benefit">Real ingredients</span>
+      </div>
+    </div>
+
+    <div style="height:16px"></div>
+  </div>
+
+  <!-- CART TAB -->
+  <div id="tab-cart" class="content fade-in" style="display:none">
+    <div id="cartContent">
+      <div class="cart-empty">
+        <span class="cart-empty-icon">🛒</span>
+        <div class="cart-empty-text">Your cart is empty</div>
+        <div class="cart-empty-sub">Add items from the menu to get started</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB BAR -->
+  <div class="tab-bar">
+    <div class="tab-item active" id="tab-btn-home" onclick="switchTab('home')">
+      <span class="tab-icon">🏠</span>
+      <span class="tab-label">Home</span>
+    </div>
+    <div class="tab-item" id="tab-btn-menu" onclick="switchTab('menu')">
+      <span class="tab-icon">📋</span>
+      <span class="tab-label">Menu</span>
+    </div>
+    <div class="tab-item" id="tab-btn-chat" onclick="switchTab('chat')">
+      <span class="tab-icon">🌿</span>
+      <span class="tab-label">Freshy</span>
+    </div>
+    <div class="tab-item" id="tab-btn-nutrition" onclick="switchTab('nutrition')">
+      <span class="tab-icon">💪</span>
+      <span class="tab-label">Nutrition</span>
+    </div>
+    <div class="tab-item" id="tab-btn-cart" onclick="switchTab('cart')">
+      <span class="tab-icon">🛒</span>
+      <span class="tab-label">Order</span>
+    </div>
+  </div>
+
+</div><!-- end app -->
+
+<script>
+
+// ══ SPLASH → REGISTER OR APP ══
+setTimeout(() => {
+  document.getElementById('splash').classList.remove('active');
+  const existing = localStorage.getItem('of_customer');
+  const skipped = sessionStorage.getItem('of_skipped');
+  if (existing || skipped) {
+    // Returning or skipped customer — go straight to app
+    if (existing) currentCustomer = JSON.parse(existing);
+    document.getElementById('app').classList.add('active');
+    updateGreeting();
+    checkInstallPrompt();
+  } else {
+    // New customer — show registration
+    document.getElementById('register').classList.add('active');
+  }
+}, 2400);
+
+// ══ CUSTOMER DATA ══
+let currentCustomer = null;
+
+function saveCustomer() {
+  const name = document.getElementById('reg-name').value.trim();
+  const phone = document.getElementById('reg-phone').value.trim();
+  const goal = document.getElementById('reg-goal').value;
+  const bday = document.getElementById('reg-bday').value;
+
+  // Validate
+  if (!name) { shakeField('reg-name'); return; }
+  if (!phone || phone.length < 10) { shakeField('reg-phone'); return; }
+
+  const customer = {
+    id: Date.now(),
+    name,
+    phone,
+    goal,
+    bday,
+    joinedAt: new Date().toISOString(),
+    visits: 1,
+    lastSeen: new Date().toISOString()
+  };
+
+  // Save to localStorage (on this device)
+  localStorage.setItem('of_customer', JSON.stringify(customer));
+
+  // Save to customer list (admin can see all)
+  const list = JSON.parse(localStorage.getItem('of_customers') || '[]');
+  // Check if phone already exists
+  const existingIdx = list.findIndex(c => c.phone === phone);
+  if (existingIdx >= 0) {
+    list[existingIdx].visits = (list[existingIdx].visits || 0) + 1;
+    list[existingIdx].lastSeen = new Date().toISOString();
+  } else {
+    list.push(customer);
+  }
+  localStorage.setItem('of_customers', JSON.stringify(list));
+
+  currentCustomer = customer;
+  trackRegister(goal); // ← track registration
+
+  // Transition to app
+  document.getElementById('register').classList.remove('active');
+  document.getElementById('app').classList.add('active');
+  updateGreeting();
+  checkInstallPrompt();
+
+  // Personalise first Freshy message
+  setTimeout(() => {
+    const area = document.getElementById('chatArea');
+    const welcome = document.createElement('div');
+    welcome.className = 'msg-row bot';
+    welcome.style.animation = 'msgIn 0.3s ease';
+    const goalText = goal ? `I see your goal is <strong>${goal}</strong> — I've got the perfect items for you! 💪` : `I'm here to help you eat well and feel great!`;
+    welcome.innerHTML = `
+      <div class="msg-av bot">🌿</div>
+      <div class="bubble-wrap">
+        <div class="bubble bot">Welcome <strong style="color:#5aad72">${name}</strong>! 🌿<br><br>${goalText}<br><br>Ask me anything — menu, nutrition, health tips or just say hi! 😊</div>
+        <div class="msg-time">Just now</div>
+      </div>`;
+    area.insertBefore(welcome, area.querySelector('.chips'));
+    area.scrollTop = area.scrollHeight;
+  }, 500);
+}
+
+function skipRegister() {
+  sessionStorage.setItem('of_skipped', '1');
+  document.getElementById('register').classList.remove('active');
+  document.getElementById('app').classList.add('active');
+  checkInstallPrompt();
+}
+
+function updateGreeting() {
+  if (!currentCustomer) return;
+  const hour = new Date().getHours();
+  const greet = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+  const el = document.querySelector('.greet-name');
+  if (el) el.innerHTML = `${greet},<br>${currentCustomer.name}! 🌿`;
+}
+
+function shakeField(id) {
+  const el = document.getElementById(id);
+  el.style.border = '1px solid rgba(224,85,85,0.6)';
+  el.style.animation = 'shake 0.4s ease';
+  setTimeout(() => {
+    el.style.border = '';
+    el.style.animation = '';
+  }, 1000);
+}
+
+// ══ SERVICE WORKER — enables PWA install popup ══
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(reg => console.log('✅ SW registered'))
+      .catch(err => console.log('SW error:', err));
+  });
+}
+
+// ══ TAB SWITCHING ══
+let currentTab = 'home';
+
+function switchTab(tab) {
+  document.getElementById(`tab-${currentTab}`).style.display = 'none';
+  document.getElementById(`tab-btn-${currentTab}`).classList.remove('active');
+  document.getElementById(`tab-${tab}`).style.display = 'flex';
+  document.getElementById(`tab-btn-${tab}`).classList.add('active');
+  currentTab = tab;
+  trackTab(tab); // ← track tab views
+  if (tab === 'chat') {
+    setTimeout(() => {
+      const area = document.getElementById('chatArea');
+      area.scrollTop = area.scrollHeight;
+    }, 100);
+  }
+}
+
+// ══ MENU FILTER ══
+function filterMenu(cat, el) {
+  document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('[data-cat]').forEach(s => {
+    s.style.display = (cat === 'all' || s.dataset.cat === cat) ? 'block' : 'none';
+  });
+}
+
+// ══ DAILY TIPS ══
+const tips = [
+  '"Sattu in the morning keeps you full until lunch — no snacking, no energy crash. Try it for 7 days."',
+  '"Start your day with a Wheatgrass Shot. 30 days of daily shots and your immunity will thank you."',
+  '"Beetroot juice before a workout increases stamina by up to 16%. Nature\'s pre-workout."',
+  '"High fibre breakfast = less hunger through the day. Our Sattu Protein Bowl does exactly that."',
+  '"Fresh juice made to order retains 3x more nutrients than bottled juice sitting on a shelf."',
+];
+document.getElementById('dailyTip').textContent = tips[new Date().getDay() % tips.length];
+
+// ══ CART ══
+let cart = {};
+
+function addToCart(name, price, icon) {
+  if (cart[name]) {
+    cart[name].qty++;
+  } else {
+    cart[name] = { price, icon, qty: 1 };
+  }
+  trackCart(name, price); // ← track cart additions
+  updateCartUI();
+  showToast(`${icon} ${name} added!`);
+}
+
+function updateCartUI() {
+  const total = Object.values(cart).reduce((s, i) => s + i.price * i.qty, 0);
+  const count = Object.values(cart).reduce((s, i) => s + i.qty, 0);
+
+  // Update cart tab label
+  document.querySelector('#tab-btn-cart .tab-icon').textContent = count > 0 ? `🛒` : '🛒';
+  document.querySelector('#tab-btn-cart .tab-label').textContent = count > 0 ? `Order (${count})` : 'Order';
+  document.getElementById('cartQuickSub').textContent = count > 0 ? `${count} items · ₹${total}` : 'Cart is empty';
+
+  // Render cart
+  const content = document.getElementById('cartContent');
+  if (Object.keys(cart).length === 0) {
+    content.innerHTML = `<div class="cart-empty"><span class="cart-empty-icon">🛒</span><div class="cart-empty-text">Your cart is empty</div><div class="cart-empty-sub">Add items from the menu</div></div>`;
+    return;
+  }
+
+  let html = '';
+  Object.entries(cart).forEach(([name, item]) => {
+    html += `
+      <div class="cart-item">
+        <span class="ci-icon">${item.icon}</span>
+        <div class="ci-info">
+          <div class="ci-name">${name}</div>
+          <div class="ci-price">₹${item.price} each</div>
+        </div>
+        <div class="ci-qty">
+          <div class="qty-btn" onclick="changeQty('${name}',-1)">−</div>
+          <span class="qty-num">${item.qty}</span>
+          <div class="qty-btn" onclick="changeQty('${name}',1)">+</div>
+        </div>
+      </div>`;
+  });
+
+  const delivery = total >= 200 ? 0 : 30;
+  const grand = total + delivery;
+
+  html += `
+    <div class="cart-summary">
+      <div class="cs-row"><span>Subtotal</span><span class="cs-val">₹${total}</span></div>
+      <div class="cs-row"><span>Delivery</span><span class="cs-val">${delivery === 0 ? 'Free 🎉' : '₹' + delivery}</span></div>
+      ${delivery > 0 ? `<div class="cs-row" style="font-size:0.6rem;color:rgba(90,173,114,0.6)"><span>Add ₹${200-total} more for free delivery</span></div>` : ''}
+      <div class="cs-row total"><span>Total</span><span class="cs-val">₹${grand}</span></div>
+    </div>
+    <button class="order-btn" onclick="placeOrder()">Place Order via WhatsApp</button>`;
+
+  content.innerHTML = html;
+}
+
+function changeQty(name, delta) {
+  cart[name].qty += delta;
+  if (cart[name].qty <= 0) delete cart[name];
+  updateCartUI();
+}
+
+function placeOrder() {
+  const items = Object.entries(cart).map(([n,i]) => `${i.qty}x ${n} (₹${i.price*i.qty})`).join('%0A');
+  const total = Object.values(cart).reduce((s,i) => s+i.price*i.qty, 0);
+  const msg = `Hello Only Fresh! 🌿%0A%0AMy Order:%0A${items}%0A%0ATotal: ₹${total}%0A%0AThank you!`;
+  window.open(`https://wa.me/91XXXXXXXXXX?text=${msg}`, '_blank');
+}
+
+// ══ TOAST ══
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.style.cssText = `position:fixed;bottom:${parseInt(getComputedStyle(document.documentElement).getPropertyValue('--tab-h'))+16}px;left:50%;transform:translateX(-50%);background:#1a3a24;border:1px solid rgba(90,173,114,0.3);color:#f0ead8;padding:8px 18px;border-radius:20px;font-size:0.75rem;font-weight:300;z-index:999;white-space:nowrap;animation:msgIn 0.3s ease;`;
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2000);
+}
+
+// ══ GOAL CHAT ══
+function goalChat(msg) {
+  switchTab('chat');
+  setTimeout(() => quickSend(null, msg), 300);
+}
+
+// ══ FRESHY OFFLINE BRAIN ══
+// Works on ALL phones. No internet. No API. Zero cost. Forever.
+
+const BRAIN = [
+  {
+    keys: ['what is only fresh','about only fresh','tell me about','brand','story','who are you','what do you do','only fresh'],
+    reply: `🌿 <strong>Only Fresh</strong> is Bengaluru's freshest food and juice bar — right on <strong>Hosur Road, Kudlu Gate</strong> near Nandi Toyota!<br><br>We started with one belief — people deserve <em>real, honest food</em> made fresh every single day. No frozen shortcuts. No compromise. Just pure goodness. 🌿<br><br>Our hero is <strong>Sattu</strong> — India's ancient superfood. Our passion is <strong>cold-pressed detox juices</strong> — zero sugar, zero preservatives, made when you order.<br><br><em>"Every sip, freshly made."</em><br><br>What would you like to know more about? 😊`
+  },
+  {
+    keys: ['sattu','what is sattu','satu','sattu shake','sattu bowl','sattu paratha','sattu laddoo','sattu detox','tell me about sattu','sattu benefits'],
+    reply: `⭐ <strong>Sattu</strong> — India's best kept superfood secret!<br><br>Roasted Bengal gram flour used by wrestlers and athletes for <em>centuries</em>. Now trending globally — and we've been serving it fresh for you! 💪<br><br><strong>Why Sattu is amazing:</strong><br>✅ 25g protein per 100g — more than eggs!<br>✅ High fibre — fills you 4-5 hours<br>✅ Low glycemic index — safe for diabetics<br>✅ Natural cooling for Bengaluru heat<br>✅ Zero additives, 100% natural<br>✅ Better and cheaper than whey protein!<br><br><strong>Our Sattu Menu:</strong><br>🥛 Power Shake (sweet/salted) — ₹80<br>🍵 Sattu Detox Drink — ₹70<br>🥗 Sattu Protein Bowl — ₹150<br>🫓 Sattu Paratha — ₹90<br>🟤 Energy Laddoo 2pcs — ₹60<br><br>Which one would you like to try? 😊`
+  },
+  {
+    keys: ['juice','detox','cold press','green detox','beetroot','orange glow','watermelon','abc juice','wheatgrass','karela','pineapple','fresh juice','detox juice'],
+    reply: `🥤 Our <strong>detox juices</strong> are made fresh when you order — never pre-made, never bottled!<br><br>Zero sugar. Zero preservatives. Just real ingredients. 🌿<br><br><strong>Our Detox Range:</strong><br>🥤 Green Detox (cucumber+spinach+amla+ginger) — ₹100<br>🍹 Beetroot Boost (beetroot+carrot+lemon) — ₹110<br>🍊 Orange Glow (orange+turmeric) — ₹90<br>🍉 Watermelon Mint Cooler — ₹80<br>🧃 ABC Juice (Apple+Beetroot+Carrot) — ₹120<br>🌱 Wheatgrass Shot 60ml — ₹80<br>🥬 Karela Amla (diabetic friendly) — ₹110<br>🍍 Pineapple Ginger Detox — ₹100<br><br>First time? Start with <strong>Green Detox + Sattu Shake</strong> — our best combo! Which one catches your eye? 😊`
+  },
+  {
+    keys: ['menu','full menu','what do you have','all items','food','what can i order','show me menu','price','prices','how much','cost','show menu'],
+    reply: `📋 <strong>Only Fresh — Full Menu</strong><br><br>⭐ <strong>SATTU (Signature)</strong><br>🥛 Sattu Power Shake — ₹80<br>🍵 Sattu Detox Drink — ₹70<br>🥗 Sattu Protein Bowl — ₹150<br>🫓 Sattu Paratha — ₹90<br>🟤 Sattu Laddoo 2pcs — ₹60<br><br>🥤 <strong>DETOX JUICES</strong><br>Green Detox ₹100 | Beetroot Boost ₹110<br>Orange Glow ₹90 | Watermelon Mint ₹80<br>ABC Juice ₹120 | Wheatgrass Shot ₹80<br>Karela Amla ₹110 | Pineapple Ginger ₹100<br><br>🍱 <strong>TIFFIN</strong> (7-11AM & 4-9PM)<br>Idli 2pcs ₹60 | Masala Dosa ₹80<br>Upma ₹60 | Poha ₹50 | Vada 2pcs ₹70<br>Tiffin Combo ₹100<br><br>🥗 <strong>BOWLS</strong><br>Garden Salad ₹120 | Sprouts Bowl ₹110<br>Protein Bowl ₹150 | Fruit Bowl ₹130<br><br>🥤 <strong>SMOOTHIES & HOT</strong><br>Banana Oat ₹120 | Mango Ginger ₹130<br>Tulsi Kadha ₹60 | Ginger Lemon Tea ₹50<br><br>Want a recommendation based on your health goal? 💚`
+  },
+  {
+    keys: ['weight','lose','fat','slim','diet','reduce','calorie','losing weight','weight loss','fat loss','reduce weight'],
+    reply: `⚖️ <strong>Only Fresh Weight Loss Plan:</strong><br><br>🌅 <strong>Morning:</strong><br>Sattu Detox Drink ₹70 — high fibre, fills you up, boosts metabolism<br><br>☀️ <strong>Midday:</strong><br>Green Detox Juice ₹100 — flushes toxins, very low calorie<br><br>🌆 <strong>Meal:</strong><br>Sprouts Power Bowl ₹110 — high protein, low carb, filling<br><br><strong>Why this works:</strong><br>✅ Sattu keeps you full 4-5 hours — no snacking!<br>✅ Green Detox curbs appetite naturally<br>✅ Zero sugar in everything<br>✅ All real ingredients, no processed food<br><br>💡 <em>Try Sattu Detox every morning for 2 weeks. Most people see a real difference!</em><br><br>Want a full day meal plan from our menu? 🌿`
+  },
+  {
+    keys: ['gym','muscle','workout','protein','fitness','bodybuilding','strength','post workout','pre workout','exercise','training','build muscle','gains'],
+    reply: `💪 <strong>Only Fresh Gym Plan:</strong><br><br>🏋️ <strong>Pre-Workout (30 mins before):</strong><br>Sattu Power Shake ₹80 — sustained energy, no crash<br>Beetroot Boost ₹110 — increases stamina naturally!<br><br>💪 <strong>Post-Workout (within 1 hour):</strong><br>Sattu Protein Bowl ₹150 — 25g+ protein, muscle recovery<br>ABC Juice ₹120 — antioxidants, reduces inflammation<br><br><strong>Why Sattu beats whey protein:</strong><br>✅ 25g protein per 100g — same as whey<br>✅ Zero artificial additives<br>✅ Better digestion than whey<br>✅ Costs 5x less than supplements<br>✅ 100% natural, made in India 🇮🇳<br><br>💡 <em>Many gym goers near Kudlu Gate have switched from whey to Sattu Shake!</em><br><br>What's your workout timing? I'll suggest the perfect combo! 🏋️`
+  },
+  {
+    keys: ['energy','tired','fatigue','boost','active','morning energy','afternoon slump','focus','productive','low energy','no energy'],
+    reply: `⚡ <strong>Only Fresh Energy Boosters:</strong><br><br>🥛 <strong>Sattu Power Shake ₹80</strong><br>Sustained energy for 4-5 hours. Zero caffeine. Zero crash. Pure natural fuel.<br><br>🍹 <strong>Beetroot Boost ₹110</strong><br>Increases nitric oxide — more oxygen to muscles and brain. Athletes swear by it!<br><br>🌱 <strong>Wheatgrass Shot ₹80</strong><br>60ml of pure chlorophyll energy. Works in 20 minutes. Office workers call it their green coffee!<br><br>💡 <em>Replace your 3PM chai with a Sattu Shake — better focus, no crash, and actually nutritious!</em><br><br>What time of day do you need the most energy? ⚡`
+  },
+  {
+    keys: ['diabetes','diabetic','sugar','blood sugar','glucose','insulin','low gi','glycemic','sugar free','sugar level'],
+    reply: `🩺 <strong>Diabetic-Safe Options at Only Fresh:</strong><br><br>✅ <strong>Sattu Power Shake (unsweetened) ₹80</strong><br>Low glycemic index — no blood sugar spike. High protein. Nutritionists recommend sattu for diabetics.<br><br>✅ <strong>Karela Amla Detox ₹110</strong><br>Bitter gourd naturally helps manage blood sugar. Zero sugar added.<br><br>✅ <strong>Sprouts Power Bowl ₹110</strong><br>Complex carbs, high fibre — slow digestion, no sugar spike.<br><br>✅ <strong>Green Detox ₹100</strong><br>All vegetables, zero fruit sugar, maximum nutrients.<br><br>⚠️ <em>Everything at Only Fresh is zero added sugar. We never use artificial sweeteners either.</em><br><br>💡 Note: This is nutrition guidance, not medical advice. Consult your doctor for medical decisions.<br><br>Would you like a full day diabetic-friendly plan? 🌿`
+  },
+  {
+    keys: ['immunity','immune','sick','cold','cough','fever','vitamin c','infection','flu','health boost','immunity boost','fall sick'],
+    reply: `🛡️ <strong>Only Fresh Immunity Boosters:</strong><br><br>☕ <strong>Tulsi Kadha ₹60</strong><br>Ayurvedic immunity powerhouse. Anti-viral, anti-bacterial. Daily habit for strong immunity.<br><br>🍊 <strong>Orange Glow ₹90</strong><br>Fresh orange + turmeric + black pepper. Vitamin C + curcumin = powerful immune duo.<br><br>🌱 <strong>Wheatgrass Shot ₹80</strong><br>30 days daily = visible immunity improvement. Rich in chlorophyll and antioxidants.<br><br>🧃 <strong>ABC Juice ₹120</strong><br>Apple+Beetroot+Carrot — antioxidant powerhouse in one glass.<br><br>💡 <em>Immunity combo: Tulsi Kadha in morning + Wheatgrass Shot midday. Try for 2 weeks!</em><br><br>Are you looking to prevent illness or recover from something? 🌿`
+  },
+  {
+    keys: ['skin','glow','face','complexion','acne','beauty','hair','skin glow','clear skin','natural beauty','skin care'],
+    reply: `✨ <strong>Only Fresh Beauty from Inside:</strong><br><br>🧃 <strong>ABC Juice ₹120</strong><br>Apple+Beetroot+Carrot — beta carotene gives your skin a natural glow from within.<br><br>🍉 <strong>Watermelon Mint ₹80</strong><br>95% water content — best natural hydrator. Hydrated skin = healthy skin.<br><br>🥤 <strong>Green Detox ₹100</strong><br>Spinach+Amla+Cucumber — flushes toxins that cause acne and dull skin.<br><br>💡 <em>Freshy tip: Drink Green Detox every morning for 30 days. Skin changes are visible by week 3!</em><br><br>Beauty is nutrition first. What's your main skin concern? ✨`
+  },
+  {
+    keys: ['location','where','address','how to reach','find you','directions','hosur road','kudlu gate','nandi toyota','map'],
+    reply: `📍 <strong>Find Only Fresh:</strong><br><br>🗺️ <strong>Hosur Road, Kudlu Gate, Bengaluru</strong><br>Near Nandi Toyota showroom<br><br>🕐 <strong>Timings:</strong><br>7:00 AM – 9:00 PM<br>Open all 7 days including Sundays & holidays<br><br>🚗 Easy parking available<br>📱 Order on Zomato or WhatsApp<br><br>💡 <em>We're right on the main road — can't miss us!</em><br><br>Are you coming in or would you like to order online? 🌿`
+  },
+  {
+    keys: ['timing','time','open','close','hours','when','what time','working hours','open today','open now'],
+    reply: `🕐 <strong>Only Fresh Timings:</strong><br><br>⏰ <strong>7:00 AM – 9:00 PM</strong><br>Every single day — no weekly offs, no holidays!<br><br>🌅 <strong>Breakfast</strong> (7–11AM): Full tiffin + juices + sattu<br>☀️ <strong>Lunch</strong> (11AM–3PM): Bowls + juices + sattu<br>🌆 <strong>Evening</strong> (3–9PM): Juices + sattu + smoothies<br><br>💡 <em>We're early birds just like you! Fresh ingredients prepared from 6:30 AM every day.</em><br><br>What time are you usually free to visit? 😊`
+  },
+  {
+    keys: ['book','table','reservation','seat','booking','reserve','book table','book a table'],
+    reply: `🪑 <strong>Table Booking at Only Fresh:</strong><br><br>I'd love to get your table ready! Please share:<br><br>📅 Which date?<br>🕐 What time?<br>👥 How many people?<br><br>Or WhatsApp us directly and we'll confirm in minutes! We'll have your table ready and something fresh waiting for you. 😊<br><br>Any special occasion we should know about? 🎉`
+  },
+  {
+    keys: ['recommend','suggest','what should i','what to order','not sure','help me choose','first time','new here','best item','best seller','popular'],
+    reply: `🌿 <strong>Freshy's Top Picks for You:</strong><br><br>🥛 <strong>Start with Sattu Power Shake ₹80</strong><br>Our hero item. Most first-timers are blown away by how filling and tasty it is!<br><br>🥤 <strong>Add Green Detox Juice ₹100</strong><br>The perfect pair. Sattu + Green Detox = complete nutrition in one visit.<br><br>🟤 <strong>Try Sattu Laddoo ₹60</strong><br>Take-home energy snack. Natural, delicious, and lasts all day.<br><br>💡 <em>This combo is what I'd order on Day 1. Simple, powerful, and you'll come back for more!</em><br><br>Is this your first time at Only Fresh? I'll make sure Freshy guides you perfectly! 😊`
+  },
+  {
+    keys: ['combo','combination','together','pair','what goes with','bundle','meal deal'],
+    reply: `🌿 <strong>Best Combos at Only Fresh:</strong><br><br>💪 <strong>Power Start Combo</strong><br>Sattu Shake + Idli 2pcs = ₹140 (Save ₹20)<br>Perfect morning fuel<br><br>⚡ <strong>Detox Duo</strong><br>Green Detox + Wheatgrass Shot = ₹180 (Save ₹20)<br>Maximum cleanse<br><br>🏋️ <strong>Gym Pack</strong><br>Sattu Protein Bowl + Beetroot Boost = ₹260 (Save ₹40)<br>Pre or post workout perfection<br><br>🌅 <strong>Office Tiffin</strong><br>Tiffin Combo + Any Juice = ₹200<br>Complete balanced meal<br><br>Which combo matches your goal today? 😊`
+  },
+  {
+    keys: ['feedback','complaint','bad','problem','wrong','issue','not good','taste','quality','unhappy','disappointed'],
+    reply: `🙏 Thank you so much for sharing this with me — feedback is how we get better!<br><br>I'm genuinely sorry if something wasn't right. At Only Fresh, every order should be perfect. If anything fell short, please know we take it very seriously.<br><br>I'll make sure this reaches the team directly. Could you share:<br>📝 What item was it?<br>🕐 When did you order?<br><br>We want to make it right for you. Your trust means everything to us. 💚`
+  },
+  {
+    keys: ['tiffin','idli','dosa','upma','poha','vada','south indian','breakfast','morning food'],
+    reply: `🍱 <strong>Only Fresh Tiffin</strong> — South Indian goodness, made fresh!<br><br>Available: <strong>7AM–11AM</strong> (morning) and <strong>4PM–9PM</strong> (evening)<br><br>⚪ Idli 2pcs + sambar + chutney — ₹60<br>🫓 Masala Dosa — ₹80<br>🫓 Plain Dosa — ₹60<br>🍚 Rava Upma — ₹60<br>🟡 Poha — ₹50<br>🟠 Vada 2pcs — ₹70<br>🍱 Mini Tiffin Combo (2 Idli + 1 Vada) — ₹100<br><br>💡 <em>Our tiffin batter is freshly prepared every morning — no yesterday's batter here!</em><br><br>Combine with a Sattu Shake for the perfect complete breakfast 😊 What time do you usually eat breakfast?`
+  },
+  {
+    keys: ['hi','hello','hey','good morning','good evening','good afternoon','namaste','hii','helo','hai'],
+    reply: `Hey! 👋 Welcome to <strong>Only Fresh</strong>! So happy you're here! 🌿<br><br>I'm <strong>Freshy</strong> — your nutrition friend, brand guide, and front desk all in one!<br><br>I can help you with:<br>🥛 What to eat for your health goal<br>📋 Our full menu and prices<br>📍 Location and timings<br>🪑 Table booking<br>💪 Nutrition advice<br><br>What brings you to Only Fresh today? 😊`
+  },
+  {
+    keys: ['thank','thanks','thank you','awesome','great','amazing','love it','perfect','wonderful','helpful','good'],
+    reply: `💚 That means the world to me — thank you so much!<br><br>At Only Fresh, making you feel good is everything we do — from the food to this little chat! 🌿<br><br>Is there anything else Freshy can help you with? Whether it's nutrition advice, menu questions, or just a food recommendation — I'm always here! 😊`
+  },
+  {
+    keys: ['why only fresh','different','unique','special','why choose','what makes you','better than','stand out'],
+    reply: `✨ <strong>What makes Only Fresh truly different:</strong><br><br>🌿 <strong>Sattu — Our Differentiator</strong><br>No other food bar in Kudlu Gate area serves sattu. It's our signature and nobody can copy our recipe and care.<br><br>🥤 <strong>Made To Order — Always</strong><br>Every juice is pressed when you order. Not an hour ago. Not yesterday. Right now.<br><br>🚫 <strong>What we never do:</strong><br>❌ No frozen ingredients<br>❌ No added sugar in juices<br>❌ No reheating<br>❌ No artificial anything<br><br>💚 <strong>What we always do:</strong><br>✅ Fresh daily sourcing<br>✅ Real ingredients you can see<br>✅ Made with genuine care<br><br>💡 <em>We're not just a food bar. We're your health partner in Bengaluru.</em><br><br>What matters most to you in a food place? 🌿`
+  }
+];
+
+// Default fallback responses
+const DEFAULTS = [
+  `🌿 Great question! I'd love to help. Could you tell me a bit more?<br><br>For example, are you asking about our <strong>menu</strong>, <strong>nutrition advice</strong>, <strong>health goals</strong>, or something about <strong>Only Fresh</strong>?<br><br>I'm Freshy — your nutrition friend here! Ask me anything 😊`,
+  `Hmm, let me think about that! 🌿<br><br>I know everything about <strong>Only Fresh</strong> — our sattu items, detox juices, tiffin, health goals, location, and more.<br><br>Could you rephrase your question? Or just tap one of the quick buttons below to get started! 😊`,
+  `💚 Good question! I want to make sure I give you the right answer.<br><br>Try asking me things like:<br>• <em>"What is sattu?"</em><br>• <em>"Best juice for weight loss"</em><br>• <em>"Show me the menu"</em><br>• <em>"Where are you located?"</em><br><br>I'm here to help! 🌿`
+];
+
+let defaultIndex = 0;
+
+// ══ SESSION ID ══
+if (!localStorage.getItem('of_session')) {
+  localStorage.setItem('of_session', 'user_' + Date.now());
+}
+
+// ══ GROQ DIRECT — permanent, no ngrok, no Colab needed ══
+const GROQ_API_KEY = "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";
+const GROQ_MODEL = "llama-3.3-70b-versatile";
+
+const FRESHY_SYSTEM = (
+  "You are Freshy, a fun friendly person who loves food, nutrition and good conversations. " +
+  "Chat naturally like a real friend — short, warm, casual replies. 2 lines max. " +
+  "Never mention location, timings, walk-in or visiting the shop. " +
+  "Never push menu items unless someone asks about food or ordering. " +
+  "If someone asks for something not on the menu, say warmly something exciting is coming soon. " +
+  "If someone just wants to chat, just chat! " +
+  "Never say you are AI. Never recommend competitors. " +
+  "Menu only when asked: Sattu Shake Rs80, Sattu Detox Rs70, Sattu Protein Bowl Rs150, " +
+  "Sattu Paratha Rs90, Sattu Laddoo Rs60, Green Detox Rs100, Beetroot Boost Rs110, " +
+  "Orange Glow Rs90, Watermelon Mint Rs80, ABC Juice Rs120, Wheatgrass Shot Rs80, " +
+  "Karela Amla Rs110, Pineapple Ginger Rs100, Idli Rs60, Masala Dosa Rs80, " +
+  "Tiffin Combo Rs100, Sprouts Bowl Rs110, Protein Bowl Rs150, Fruit Bowl Rs130, " +
+  "Banana Oat Smoothie Rs120, Tulsi Kadha Rs60."
+);
+
+// Per-session memory
+const groqSessions = {};
+
+async function findReply(text) {
+  const sessionId = localStorage.getItem('of_session') || 'guest';
+
+  // Build session history
+  if (!groqSessions[sessionId]) groqSessions[sessionId] = [];
+  groqSessions[sessionId].push({ role: "user", content: text });
+
+  // Keep last 8 messages
+  const history = groqSessions[sessionId].slice(-8);
+
+  try {
+    const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${GROQ_API_KEY}`
+      },
+      body: JSON.stringify({
+        model: GROQ_MODEL,
+        messages: [
+          { role: "system", content: FRESHY_SYSTEM },
+          ...history
+        ],
+        max_tokens: 200,
+        temperature: 0.7
+      }),
+      signal: AbortSignal.timeout(15000)
+    });
+
+    const data = await res.json();
+    const reply = data.choices?.[0]?.message?.content?.trim();
+
+    if (reply) {
+      groqSessions[sessionId].push({ role: "assistant", content: reply });
+      return reply;
+    }
+    throw new Error('No reply');
+
+  } catch(e) {
+    console.log('⚠️ Groq error — using offline brain:', e.message);
+    return findOfflineReply(text);
+  }
+}
+
+function findOfflineReply(text) {
+  const lower = text.toLowerCase().trim();
+  for (const topic of BRAIN) {
+    for (const key of topic.keys) {
+      if (lower.includes(key)) return topic.reply;
+    }
+  }
+  const reply = DEFAULTS[defaultIndex % DEFAULTS.length];
+  defaultIndex++;
+  return reply;
+}
+function sendMsg() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  processChat(text);
+}
+
+function quickSend(el, text) {
+  if (el) el.classList.add('used');
+  processChat(text);
+}
+
+async function processChat(text) {
+  addBubble(text, 'user');
+  trackChat(text); // ← track every chat message
+  const tid = showTypingIndicator();
+  document.getElementById('sendBtn').disabled = true;
+  const reply = await findReply(text);
+  removeEl(tid);
+  addBubble(reply, 'bot');
+  addFollowChips();
+  document.getElementById('sendBtn').disabled = false;
+}
+
+function addBubble(text, type) {
+  const area = document.getElementById('chatArea');
+  const now = new Date();
+  const time = `${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
+  const fmt = text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\*(.*?)\*/g,'<em>$1</em>').replace(/\n/g,'<br>');
+  const row = document.createElement('div');
+  row.className = `msg-row ${type==='user'?'user':'bot'}`;
+  if (type==='error') {
+    row.innerHTML = `<div class="msg-av bot">🌿</div><div class="bubble-wrap"><div class="bubble bot" style="color:rgba(240,160,160,0.8)">${fmt}</div></div>`;
+  } else {
+    row.innerHTML = `
+      <div class="msg-av ${type==='user'?'usr':'bot'}">${type==='user'?'👤':'🌿'}</div>
+      <div class="bubble-wrap">
+        <div class="bubble ${type}">${fmt}</div>
+        <div class="msg-time">${time} · tap to copy</div>
+      </div>`;
+    // Add tap to copy on the bubble — strips HTML cleanly
+    const bubble = row.querySelector('.bubble');
+    bubble.style.cursor = 'pointer';
+    bubble.addEventListener('click', () => copyBubble(bubble));
+  }
+  area.appendChild(row);
+  area.scrollTop = area.scrollHeight;
+}
+
+function copyBubble(el) {
+  // Strip HTML tags cleanly — get only visible text
+  const tmp = document.createElement('div');
+  tmp.innerHTML = el.innerHTML.replace(/<br\s*\/?>/gi, '\n');
+  const plain = tmp.textContent || tmp.innerText || '';
+
+  navigator.clipboard.writeText(plain.trim()).then(() => {
+    showToast('📋 Copied!');
+    el.style.opacity = '0.6';
+    setTimeout(() => el.style.opacity = '1', 300);
+  }).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = plain.trim();
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast('📋 Copied!');
+  });
+}
+
+function showTypingIndicator() {
+  const area = document.getElementById('chatArea');
+  const id = 'ty'+Date.now();
+  const row = document.createElement('div');
+  row.className = 'msg-row bot'; row.id = id;
+  row.innerHTML = `<div class="msg-av bot">🌿</div><div class="bubble-wrap"><div class="typing-bubble"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>`;
+  area.appendChild(row);
+  area.scrollTop = area.scrollHeight;
+  return id;
+}
+
+function removeEl(id) { document.getElementById(id)?.remove(); }
+
+const followOpts = [
+  ['⭐ Sattu benefits','Tell me all the benefits of sattu'],
+  ['🥤 Best juice for me','Which juice is best for my health?'],
+  ['💪 Post workout','What to eat after workout at Only Fresh?'],
+  ['📋 Full menu','Show full menu with prices'],
+  ['🪑 Book table','I want to book a table'],
+  ['📍 Location','Where exactly is Only Fresh?'],
+  ['⚖️ Weight loss','Best items for weight loss'],
+  ['🌿 Brand story','Tell me about Only Fresh'],
+];
+
+function addFollowChips() {
+  const area = document.getElementById('chatArea');
+  const old = area.querySelectorAll('.chips.follow');
+  if (old.length >= 2) old[0].remove();
+  const div = document.createElement('div');
+  div.className = 'chips follow';
+  [...followOpts].sort(()=>Math.random()-0.5).slice(0,3).forEach(([label,msg]) => {
+    const c = document.createElement('div');
+    c.className = 'chip';
+    c.textContent = label;
+    c.onclick = () => quickSend(c, msg);
+    div.appendChild(c);
+  });
+  area.appendChild(div);
+  area.scrollTop = area.scrollHeight;
+}
+
+// ══ PWA INSTALL ══
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  checkInstallPrompt();
+});
+
+function checkInstallPrompt() {
+  if (deferredPrompt) {
+    document.getElementById('installBanner').classList.add('show');
+  }
+}
+
+function installApp() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(r => {
+      if (r.outcome === 'accepted') {
+        document.getElementById('installBanner').classList.remove('show');
+      }
+      deferredPrompt = null;
+    });
+  }
+}
+
+</script>
+</body>
+</html>

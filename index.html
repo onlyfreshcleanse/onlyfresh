@@ -76,6 +76,7 @@
     color: var(--cream);
     font-family: 'DM Sans', sans-serif;
     min-height: 100vh;
+    width: 100%;
     max-width: 480px;
     margin: 0 auto;
     position: relative;
@@ -433,20 +434,23 @@
 
   .hero-scroll {
     display: flex;
-    gap: 12px;
+    gap: 10px;
     padding: 0 18px 4px;
     overflow-x: auto;
     scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
   }
   .hero-scroll::-webkit-scrollbar { display:none; }
 
   .hero-card {
     flex-shrink: 0;
-    width: 160px;
+    width: 150px;
+    scroll-snap-align: start;
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 16px;
-    padding: 16px 14px;
+    padding: 14px 12px;
     cursor: pointer;
     transition: all 0.2s;
     position: relative;
@@ -492,19 +496,27 @@
     grid-template-columns: 1fr 1fr;
     gap: 10px;
     padding: 0 18px;
+    width: 100%;
   }
 
   .quick-card {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 14px;
-    padding: 14px;
+    padding: 12px;
     cursor: pointer;
     transition: all 0.2s;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
+    min-width: 0;
+    overflow: hidden;
   }
+
+  .qc-icon { font-size:1.2rem; flex-shrink:0; }
+  .qc-text { min-width:0; overflow:hidden; }
+  .qc-title { font-size:0.72rem; font-weight:400; color:var(--cream); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .qc-sub { font-size:0.56rem; font-weight:300; color:rgba(168,196,176,0.5); margin-top:1px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 
   .quick-card:active { transform: scale(0.97); }
   .qc-icon { font-size: 1.4rem; flex-shrink:0; }
@@ -521,6 +533,7 @@
     padding: 16px;
     position: relative;
     overflow: hidden;
+    width: calc(100% - 36px);
   }
 
   .tip-card::before {
@@ -825,6 +838,66 @@
 
   .order-btn:active { transform:scale(0.98); }
 
+  /* ══ DELIVERY SECTION ══ */
+  .delivery-section {
+    margin: 14px 18px 0;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+  }
+
+  .ds-title {
+    font-size: 0.62rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .ds-input {
+    width: 100%;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(201,162,85,0.2);
+    border-radius: 10px;
+    padding: 10px 14px;
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 300;
+    outline: none;
+    resize: none;
+    line-height: 1.5;
+    transition: border-color 0.2s;
+  }
+
+  .ds-input:focus { border-color: rgba(90,173,114,0.4); }
+  .ds-input::placeholder { color: rgba(168,196,176,0.3); }
+
+  .payment-options { display:flex; flex-direction:column; gap:8px; }
+
+  .pay-opt {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.06);
+    cursor: pointer;
+    transition: all 0.2s;
+    background: rgba(255,255,255,0.02);
+  }
+
+  .pay-opt.active {
+    border-color: rgba(90,173,114,0.4);
+    background: rgba(90,173,114,0.08);
+  }
+
+  .pay-icon { font-size:1.4rem; flex-shrink:0; }
+  .pay-name { font-size:0.78rem; font-weight:400; color:var(--cream); }
+  .pay-sub { font-size:0.6rem; font-weight:300; color:rgba(168,196,176,0.5); margin-top:1px; }
+
   /* ══ INSTALL BANNER ══ */
   .install-banner {
     display: none;
@@ -887,8 +960,8 @@
     </div>
 
     <div class="reg-field">
-      <label class="reg-label">WhatsApp Number *</label>
-      <input class="reg-input" id="reg-phone" type="tel" placeholder="10-digit mobile number" maxlength="10" pattern="[0-9]*" inputmode="numeric">
+      <label class="reg-label">WhatsApp Number (optional)</label>
+      <input class="reg-input" id="reg-phone" type="tel" placeholder="10-digit mobile number (optional)" maxlength="10" pattern="[0-9]*" inputmode="numeric">
     </div>
 
     <div class="reg-field">
@@ -941,7 +1014,7 @@
       </div>
     </div>
     <div class="header-right">
-      <div class="notif-btn" title="Notifications">🔔</div>
+      <div class="notif-btn" id="notifBtn" onclick="handleNotif()" title="Notifications">🔔</div>
     </div>
   </div>
 
@@ -965,8 +1038,8 @@
     <div class="home-hero">
       <div class="greet-row">
         <div class="greet-text">
-          <div class="greet-hi">Good morning 🌿</div>
-          <div class="greet-name">What would you<br>like today?</div>
+          <div class="greet-hi" id="greetHi">Good morning 🌿</div>
+          <div class="greet-name" id="greetName">What would you<br>like today?</div>
           <div class="greet-sub">Hosur Road · Kudlu Gate · Bengaluru</div>
         </div>
       </div>
@@ -983,45 +1056,6 @@
     </div>
 
     <!-- Hero items -->
-    <div class="section-title">⭐ Hero Items</div>
-    <div class="hero-scroll">
-      <div class="hero-card" onclick="addToCart('Sattu Power Shake', 80, '🥛')">
-        <span class="hc-badge">⭐ Signature</span>
-        <span class="hc-icon">🥛</span>
-        <div class="hc-name">Sattu Power Shake</div>
-        <div class="hc-desc">25g protein · High fibre · Natural energy</div>
-        <div class="hc-price">₹80</div>
-      </div>
-      <div class="hero-card" onclick="addToCart('Green Detox Juice', 100, '🥤')">
-        <span class="hc-badge gold-badge">🌿 Detox</span>
-        <span class="hc-icon">🥤</span>
-        <div class="hc-name">Green Detox</div>
-        <div class="hc-desc">Cucumber · Spinach · Amla · Ginger</div>
-        <div class="hc-price">₹100</div>
-      </div>
-      <div class="hero-card" onclick="addToCart('Sattu Protein Bowl', 150, '🥗')">
-        <span class="hc-badge">💪 High Protein</span>
-        <span class="hc-icon">🥗</span>
-        <div class="hc-name">Protein Bowl</div>
-        <div class="hc-desc">Sattu · Sprouts · Seeds · Veggies</div>
-        <div class="hc-price">₹150</div>
-      </div>
-      <div class="hero-card" onclick="addToCart('Beetroot Boost', 110, '🍹')">
-        <span class="hc-badge gold-badge">⚡ Energy</span>
-        <span class="hc-icon">🍹</span>
-        <div class="hc-name">Beetroot Boost</div>
-        <div class="hc-desc">Beetroot · Carrot · Ginger · Lemon</div>
-        <div class="hc-price">₹110</div>
-      </div>
-      <div class="hero-card" onclick="addToCart('ABC Juice', 120, '🧃')">
-        <span class="hc-badge gold-badge">🌟 Popular</span>
-        <span class="hc-icon">🧃</span>
-        <div class="hc-name">ABC Juice</div>
-        <div class="hc-desc">Apple · Beetroot · Carrot · Fresh pressed</div>
-        <div class="hc-price">₹120</div>
-      </div>
-    </div>
-
     <!-- Quick actions -->
     <div class="section-title">Quick Actions</div>
     <div class="quick-grid">
@@ -1035,8 +1069,8 @@
       <div class="quick-card" onclick="switchTab('menu')">
         <span class="qc-icon">📋</span>
         <div class="qc-text">
-          <div class="qc-title">Full Menu</div>
-          <div class="qc-sub">All items & prices</div>
+          <div class="qc-title">Our Menu</div>
+          <div class="qc-sub">Coming soon</div>
         </div>
       </div>
       <div class="quick-card" onclick="switchTab('nutrition')">
@@ -1063,6 +1097,70 @@
       <div class="tip-src">— Freshy, Only Fresh</div>
     </div>
 
+    <!-- Detox Knowledge Section -->
+    <div class="section-title">🥤 Know Your Detox</div>
+
+    <div style="padding:0 18px;display:flex;flex-direction:column;gap:10px;">
+
+      <div class="nutri-card" onclick="switchTab('chat')" style="cursor:pointer">
+        <div class="nc-top">
+          <div class="nc-name">What is Cold-Pressed Juice?</div>
+          <span class="nc-icon">🥤</span>
+        </div>
+        <div class="nc-desc">Cold pressing uses hydraulic pressure instead of heat — preserving up to 3x more vitamins, enzymes and minerals than regular juicing. Every juice at Only Fresh is made this way.</div>
+        <div class="nc-benefits">
+          <span class="nc-benefit">3x more nutrients</span>
+          <span class="nc-benefit">No heat damage</span>
+          <span class="nc-benefit">Live enzymes</span>
+          <span class="nc-benefit">Zero sugar added</span>
+        </div>
+      </div>
+
+      <div class="nutri-card" onclick="switchTab('chat')" style="cursor:pointer">
+        <div class="nc-top">
+          <div class="nc-name">Why Detox Your Body?</div>
+          <span class="nc-icon">🌿</span>
+        </div>
+        <div class="nc-desc">Your liver, kidneys and skin constantly filter toxins from food, air and stress. Fresh detox juices with amla, ginger and greens support this natural process — giving you more energy, clearer skin and better digestion.</div>
+        <div class="nc-benefits">
+          <span class="nc-benefit">Flushes toxins</span>
+          <span class="nc-benefit">Boosts energy</span>
+          <span class="nc-benefit">Clears skin</span>
+          <span class="nc-benefit">Aids digestion</span>
+        </div>
+      </div>
+
+      <div class="nutri-card" onclick="switchTab('chat')" style="cursor:pointer">
+        <div class="nc-top">
+          <div class="nc-name">Best Time to Drink Detox Juice</div>
+          <span class="nc-icon">⏰</span>
+        </div>
+        <div class="nc-desc">Morning on empty stomach is ideal — your body absorbs nutrients fastest. Green Detox first thing in the morning kickstarts metabolism and hydrates cells after overnight fasting.</div>
+        <div class="nc-benefits">
+          <span class="nc-benefit">Morning empty stomach</span>
+          <span class="nc-benefit">30 mins before meals</span>
+          <span class="nc-benefit">Post workout</span>
+        </div>
+      </div>
+
+      <div class="nutri-card" onclick="switchTab('chat')" style="cursor:pointer">
+        <div class="nc-top">
+          <div class="nc-name">Which Juice for Which Goal?</div>
+          <span class="nc-icon">🎯</span>
+        </div>
+        <div class="nc-desc">Each juice at Only Fresh is crafted for a specific health goal — not just taste.</div>
+        <div class="nc-benefits">
+          <span class="nc-benefit">Green Detox → Skin + Weight</span>
+          <span class="nc-benefit">Beetroot → Stamina</span>
+          <span class="nc-benefit">ABC → Glow + Energy</span>
+          <span class="nc-benefit">Karela Amla → Diabetes</span>
+          <span class="nc-benefit">Wheatgrass → Immunity</span>
+          <span class="nc-benefit">Orange Glow → Vitamin C</span>
+        </div>
+      </div>
+
+    </div>
+
     <div style="height:20px"></div>
   </div>
 
@@ -1073,6 +1171,7 @@
       <div class="cat-pill" onclick="filterMenu('sattu', this)">⭐ Sattu</div>
       <div class="cat-pill" onclick="filterMenu('detox', this)">🥤 Detox Juices</div>
       <div class="cat-pill" onclick="filterMenu('tiffin', this)">🍱 Tiffin</div>
+      <div class="cat-pill" onclick="filterMenu('dal', this)">🍚 Dal + Rice</div>
       <div class="cat-pill" onclick="filterMenu('bowls', this)">🥗 Bowls</div>
       <div class="cat-pill" onclick="filterMenu('smoothies', this)">🥤 Smoothies</div>
     </div>
@@ -1107,15 +1206,6 @@
             <div class="mi-tags"><span class="mi-tag gold">⭐ Hero</span><span class="mi-tag">💪 Muscle</span></div>
           </div>
           <div class="mi-right"><span class="mi-price">₹150</span><button class="add-btn" onclick="event.stopPropagation();addToCart('Sattu Protein Bowl',150,'🥗')">+</button></div>
-        </div>
-        <div class="menu-item" onclick="addToCart('Sattu Paratha', 90, '🫓')">
-          <span class="mi-icon">🫓</span>
-          <div class="mi-info">
-            <div class="mi-name">Sattu Paratha</div>
-            <div class="mi-desc">With green chutney · Wholesome & filling</div>
-            <div class="mi-tags"><span class="mi-tag">🌿 Healthy</span></div>
-          </div>
-          <div class="mi-right"><span class="mi-price">₹90</span><button class="add-btn" onclick="event.stopPropagation();addToCart('Sattu Paratha',90,'🫓')">+</button></div>
         </div>
         <div class="menu-item" onclick="addToCart('Sattu Laddoo', 60, '🟤')">
           <span class="mi-icon">🟤</span>
@@ -1198,7 +1288,16 @@
 
       <!-- Tiffin -->
       <div class="menu-section" data-cat="tiffin">
-        <div class="menu-section-title">🍱 South Indian Tiffin</div>
+        <div class="menu-section-title">🍱 Morning Tiffin (7AM–11AM)</div>
+        <div class="menu-item hero-item" onclick="addToCart('Moong Dal Chilla', 80, '🟡')">
+          <span class="mi-icon">🟡</span>
+          <div class="mi-info">
+            <div class="mi-name">Moong Dal Chilla</div>
+            <div class="mi-desc">Fresh moong batter · Protein packed · With chutney</div>
+            <div class="mi-tags"><span class="mi-tag gold">🌟 Morning Special</span><span class="mi-tag">💪 High Protein</span></div>
+          </div>
+          <div class="mi-right"><span class="mi-price">₹80</span><button class="add-btn" onclick="event.stopPropagation();addToCart('Moong Dal Chilla',80,'🟡')">+</button></div>
+        </div>
         <div class="menu-item" onclick="addToCart('Idli 2pcs', 60, '⚪')"><span class="mi-icon">⚪</span><div class="mi-info"><div class="mi-name">Idli (2 pcs)</div><div class="mi-desc">With sambar & chutney · Light & healthy</div></div><div class="mi-right"><span class="mi-price">₹60</span><button class="add-btn" onclick="event.stopPropagation();addToCart('Idli 2pcs',60,'⚪')">+</button></div></div>
         <div class="menu-item" onclick="addToCart('Masala Dosa', 80, '🫓')"><span class="mi-icon">🫓</span><div class="mi-info"><div class="mi-name">Masala Dosa</div><div class="mi-desc">Crispy · Potato filling · Sambhar & chutney</div></div><div class="mi-right"><span class="mi-price">₹80</span><button class="add-btn" onclick="event.stopPropagation();addToCart('Masala Dosa',80,'🫓')">+</button></div></div>
         <div class="menu-item" onclick="addToCart('Upma', 60, '🍚')"><span class="mi-icon">🍚</span><div class="mi-info"><div class="mi-name">Rava Upma</div><div class="mi-desc">Fresh veggies · Light · Morning special</div></div><div class="mi-right"><span class="mi-price">₹60</span><button class="add-btn" onclick="event.stopPropagation();addToCart('Upma',60,'🍚')">+</button></div></div>
@@ -1211,6 +1310,109 @@
         <div class="menu-item" onclick="addToCart('Garden Salad Bowl', 120, '🥗')"><span class="mi-icon">🥗</span><div class="mi-info"><div class="mi-name">Garden Fresh Salad</div><div class="mi-desc">Seasonal fresh veggies · Light dressing</div></div><div class="mi-right"><span class="mi-price">₹120</span><button class="add-btn" onclick="event.stopPropagation();addToCart('Garden Salad Bowl',120,'🥗')">+</button></div></div>
         <div class="menu-item" onclick="addToCart('Sprouts Power Bowl', 110, '🌱')"><span class="mi-icon">🌱</span><div class="mi-info"><div class="mi-name">Sprouts Power Bowl</div><div class="mi-desc">Mixed sprouts · Lemon · Spices · Protein rich</div></div><div class="mi-right"><span class="mi-price">₹110</span><button class="add-btn" onclick="event.stopPropagation();addToCart('Sprouts Power Bowl',110,'🌱')">+</button></div></div>
         <div class="menu-item" onclick="addToCart('Fruit Bowl', 130, '🍓')"><span class="mi-icon">🍓</span><div class="mi-info"><div class="mi-name">Fruit Bowl</div><div class="mi-desc">Seasonal fresh fruits · Natural vitamins</div></div><div class="mi-right"><span class="mi-price">₹130</span><button class="add-btn" onclick="event.stopPropagation();addToCart('Fruit Bowl',130,'🍓')">+</button></div></div>
+      </div>
+
+      <!-- Dal + Rice Combos — Afternoon -->
+      <div class="menu-section" data-cat="dal">
+        <div class="menu-section-title">🍚 Dal + Rice Combos (11AM–4PM)</div>
+
+        <!-- White Rice combos -->
+        <div class="menu-item hero-item" onclick="addToCart('Moong Dal + White Rice', 130, '🟡')">
+          <span class="mi-icon">🟡</span>
+          <div class="mi-info">
+            <div class="mi-name">Moong Dal + White Rice</div>
+            <div class="mi-desc">Light yellow moong · Steamed rice · Pickle</div>
+            <div class="mi-tags"><span class="mi-tag gold">💪 High Protein</span><span class="mi-tag">🩺 Diabetic safe</span></div>
+          </div>
+          <div class="mi-right"><span class="mi-price">₹130</span><button class="add-btn" onclick="event.stopPropagation();addToCart('Moong Dal + White Rice',130,'🟡')">+</button></div>
+        </div>
+        <div class="menu-item" onclick="addToCart('Toor Dal + White Rice', 130, '🟤')">
+          <span class="mi-icon">🟤</span>
+          <div class="mi-info">
+            <div class="mi-name">Toor Dal + White Rice</div>
+            <div class="mi-desc">Classic arhar dal · Tadka · Steamed rice</div>
+            <div class="mi-tags"><span class="mi-tag">🌿 Traditional</span><span class="mi-tag">💪 Protein</span></div>
+          </div>
+          <div class="mi-right"><span class="mi-price">₹130</span><button class="add-btn" onclick="event.stopPropagation();addToCart('Toor Dal + White Rice',130,'🟤')">+</button></div>
+        </div>
+        <div class="menu-item" onclick="addToCart('Masoor Dal + White Rice', 130, '🔴')">
+          <span class="mi-icon">🔴</span>
+          <div class="mi-info">
+            <div class="mi-name">Masoor Dal + White Rice</div>
+            <div class="mi-desc">Red lentil · Spiced · Steamed rice</div>
+            <div class="mi-tags"><span class="mi-tag">✨ Skin glow</span><span class="mi-tag">⚡ Iron rich</span></div>
+          </div>
+          <div class="mi-right"><span class="mi-price">₹130</span><button class="add-btn" onclick="event.stopPropagation();addToCart('Masoor Dal + White Rice',130,'🔴')">+</button></div>
+        </div>
+        <div class="menu-item" onclick="addToCart('Chana Dal + White Rice', 140, '🟡')">
+          <span class="mi-icon">🟡</span>
+          <div class="mi-info">
+            <div class="mi-name">Chana Dal + White Rice</div>
+            <div class="mi-desc">Bengal gram dal · Tempered · Steamed rice</div>
+            <div class="mi-tags"><span class="mi-tag">🌾 High fibre</span><span class="mi-tag">⚖️ Weight loss</span></div>
+          </div>
+          <div class="mi-right"><span class="mi-price">₹140</span><button class="add-btn" onclick="event.stopPropagation();addToCart('Chana Dal + White Rice',140,'🟡')">+</button></div>
+        </div>
+        <div class="menu-item hero-item" onclick="addToCart('Mixed Dal + White Rice', 150, '🫘')">
+          <span class="mi-icon">🫘</span>
+          <div class="mi-info">
+            <div class="mi-name">Mixed Dal + White Rice</div>
+            <div class="mi-desc">All 4 dals together · Maximum nutrition · Steamed rice</div>
+            <div class="mi-tags"><span class="mi-tag gold">🌟 Most Popular</span><span class="mi-tag">💪 Max Protein</span></div>
+          </div>
+          <div class="mi-right"><span class="mi-price">₹150</span><button class="add-btn" onclick="event.stopPropagation();addToCart('Mixed Dal + White Rice',150,'🫘')">+</button></div>
+        </div>
+        <div class="menu-item" onclick="addToCart('Dal Fry + White Rice', 150, '🍛')">
+          <span class="mi-icon">🍛</span>
+          <div class="mi-info">
+            <div class="mi-name">Dal Fry + White Rice</div>
+            <div class="mi-desc">Restaurant style tadka · Ghee · Steamed rice</div>
+            <div class="mi-tags"><span class="mi-tag">😋 Comfort food</span><span class="mi-tag">🌿 Wholesome</span></div>
+          </div>
+          <div class="mi-right"><span class="mi-price">₹150</span><button class="add-btn" onclick="event.stopPropagation();addToCart('Dal Fry + White Rice',150,'🍛')">+</button></div>
+        </div>
+
+        <!-- Brown Rice combos -->
+        <div style="padding:8px 0 4px;font-size:0.6rem;letter-spacing:0.3em;color:rgba(201,162,85,0.5);text-transform:uppercase">🟫 With Brown Rice (+₹20)</div>
+        <div class="menu-item" onclick="addToCart('Mixed Dal + Brown Rice', 170, '🟫')">
+          <span class="mi-icon">🟫</span>
+          <div class="mi-info">
+            <div class="mi-name">Mixed Dal + Brown Rice</div>
+            <div class="mi-desc">All 4 dals · Nutritious brown rice · High fibre</div>
+            <div class="mi-tags"><span class="mi-tag">🌾 High fibre</span><span class="mi-tag">⚖️ Weight loss</span><span class="mi-tag">🩺 Diabetic</span></div>
+          </div>
+          <div class="mi-right"><span class="mi-price">₹170</span><button class="add-btn" onclick="event.stopPropagation();addToCart('Mixed Dal + Brown Rice',170,'🟫')">+</button></div>
+        </div>
+        <div class="menu-item" onclick="addToCart('Dal Fry + Brown Rice', 170, '🍛')">
+          <span class="mi-icon">🍛</span>
+          <div class="mi-info">
+            <div class="mi-name">Dal Fry + Brown Rice</div>
+            <div class="mi-desc">Restaurant style tadka · Nutritious brown rice</div>
+            <div class="mi-tags"><span class="mi-tag">💪 Gym friendly</span><span class="mi-tag">🌿 Wholesome</span></div>
+          </div>
+          <div class="mi-right"><span class="mi-price">₹170</span><button class="add-btn" onclick="event.stopPropagation();addToCart('Dal Fry + Brown Rice',170,'🍛')">+</button></div>
+        </div>
+
+        <!-- Millet Rice combos -->
+        <div style="padding:8px 0 4px;font-size:0.6rem;letter-spacing:0.3em;color:rgba(90,173,114,0.6);text-transform:uppercase">🌾 With Millet Rice (+₹30) · Healthiest</div>
+        <div class="menu-item hero-item" onclick="addToCart('Mixed Dal + Millet Rice', 180, '🌾')">
+          <span class="mi-icon">🌾</span>
+          <div class="mi-info">
+            <div class="mi-name">Mixed Dal + Millet Rice</div>
+            <div class="mi-desc">All 4 dals · Foxtail millet rice · Ancient grain</div>
+            <div class="mi-tags"><span class="mi-tag gold">⭐ Healthiest</span><span class="mi-tag">🩺 Diabetic safe</span><span class="mi-tag">⚖️ Weight loss</span></div>
+          </div>
+          <div class="mi-right"><span class="mi-price">₹180</span><button class="add-btn" onclick="event.stopPropagation();addToCart('Mixed Dal + Millet Rice',180,'🌾')">+</button></div>
+        </div>
+        <div class="menu-item" onclick="addToCart('Moong Dal + Millet Rice', 160, '🌾')">
+          <span class="mi-icon">🌾</span>
+          <div class="mi-info">
+            <div class="mi-name">Moong Dal + Millet Rice</div>
+            <div class="mi-desc">Light moong · Foxtail millet · Perfect detox meal</div>
+            <div class="mi-tags"><span class="mi-tag">🌿 Detox meal</span><span class="mi-tag">💪 Protein</span></div>
+          </div>
+          <div class="mi-right"><span class="mi-price">₹160</span><button class="add-btn" onclick="event.stopPropagation();addToCart('Moong Dal + Millet Rice',160,'🌾')">+</button></div>
+        </div>
       </div>
 
       <!-- Smoothies -->
@@ -1367,15 +1569,14 @@ setTimeout(() => {
   const existing = localStorage.getItem('of_customer');
   const skipped = sessionStorage.getItem('of_skipped');
   if (existing || skipped) {
-    // Returning or skipped customer — go straight to app
     if (existing) currentCustomer = JSON.parse(existing);
     document.getElementById('app').classList.add('active');
-    updateGreeting();
+    updateGreeting(); // ← always update greeting on load
     checkInstallPrompt();
   } else {
-    // New customer — show registration
     document.getElementById('register').classList.add('active');
   }
+  updateGreeting(); // ← update even on register screen
 }, 2400);
 
 // ══ CUSTOMER DATA ══
@@ -1389,7 +1590,7 @@ function saveCustomer() {
 
   // Validate
   if (!name) { shakeField('reg-name'); return; }
-  if (!phone || phone.length < 10) { shakeField('reg-phone'); return; }
+  // Phone is optional — no validation needed
 
   const customer = {
     id: Date.now(),
@@ -1452,11 +1653,42 @@ function skipRegister() {
 }
 
 function updateGreeting() {
-  if (!currentCustomer) return;
   const hour = new Date().getHours();
-  const greet = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
-  const el = document.querySelector('.greet-name');
-  if (el) el.innerHTML = `${greet},<br>${currentCustomer.name}! 🌿`;
+
+  // Time-based greeting
+  let greetHi, greetEmoji, greetName;
+
+  if (hour >= 5 && hour < 12) {
+    greetHi = 'Good Morning';
+    greetEmoji = '🌅';
+    greetName = 'Start fresh<br>today!';
+  } else if (hour >= 12 && hour < 17) {
+    greetHi = 'Good Afternoon';
+    greetEmoji = '☀️';
+    greetName = 'Stay fresh<br>& energised!';
+  } else if (hour >= 17 && hour < 21) {
+    greetHi = 'Good Evening';
+    greetEmoji = '🌿';
+    greetName = 'Wind down<br>with something fresh!';
+  } else {
+    greetHi = 'Good Night';
+    greetEmoji = '🌙';
+    greetName = 'Rest well,<br>stay healthy!';
+  }
+
+  // Update hi line
+  const hiEl = document.getElementById('greetHi');
+  if (hiEl) hiEl.textContent = `${greetHi} ${greetEmoji}`;
+
+  // Update name line — personalise if customer registered
+  const nameEl = document.getElementById('greetName');
+  if (nameEl) {
+    if (currentCustomer && currentCustomer.name) {
+      nameEl.innerHTML = `Hey ${currentCustomer.name},<br>${greetName.split('<br>')[1] || 'what would you like?'}`;
+    } else {
+      nameEl.innerHTML = greetName;
+    }
+  }
 }
 
 function shakeField(id) {
@@ -1469,7 +1701,121 @@ function shakeField(id) {
   }, 1000);
 }
 
-// ══ SERVICE WORKER — enables PWA install popup ══
+// ══ NOTIFICATIONS ══
+let notifEnabled = localStorage.getItem('of_notif') === 'true';
+
+function updateNotifBtn() {
+  const btn = document.getElementById('notifBtn');
+  if (!btn) return;
+  if (notifEnabled) {
+    btn.textContent = '🔔';
+    btn.style.background = 'rgba(90,173,114,0.2)';
+    btn.style.border = '1px solid rgba(90,173,114,0.4)';
+  } else {
+    btn.textContent = '🔕';
+    btn.style.background = 'rgba(90,173,114,0.08)';
+    btn.style.border = '1px solid rgba(90,173,114,0.15)';
+  }
+}
+
+async function handleNotif() {
+  if (!('Notification' in window)) {
+    showToast('❌ Notifications not supported on this browser');
+    return;
+  }
+
+  if (notifEnabled) {
+    // Turn off
+    notifEnabled = false;
+    localStorage.setItem('of_notif', 'false');
+    updateNotifBtn();
+    showToast('🔕 Notifications turned off');
+    return;
+  }
+
+  // Request permission
+  const permission = await Notification.requestPermission();
+
+  if (permission === 'granted') {
+    notifEnabled = true;
+    localStorage.setItem('of_notif', 'true');
+    updateNotifBtn();
+    showToast('🔔 Notifications turned on!');
+
+    // Send welcome notification
+    setTimeout(() => {
+      sendNotif(
+        '🌿 Only Fresh',
+        'You will now get updates from Freshy — daily tips, offers and more!',
+        '🌿'
+      );
+    }, 1000);
+
+  } else if (permission === 'denied') {
+    showToast('❌ Please allow notifications in browser settings');
+  } else {
+    showToast('⚠️ Notification permission dismissed');
+  }
+}
+
+function sendNotif(title, body, icon) {
+  if (!notifEnabled || Notification.permission !== 'granted') return;
+  try {
+    new Notification(title, {
+      body,
+      icon: icon || '🌿',
+      badge: '🌿',
+      tag: 'onlyfresh'
+    });
+  } catch(e) {
+    console.log('Notif error:', e);
+  }
+}
+
+// Daily tip notification
+function scheduleDailyTip() {
+  if (!notifEnabled) return;
+  const tips = [
+    'Start your day with Sattu Shake — 25g protein, keeps you full all morning! 💪',
+    'Green Detox juice flushes toxins and gives your skin a natural glow ✨',
+    'Beetroot Boost before workout = 16% more stamina. Try it today! ⚡',
+    'Karela Amla Detox is perfect for managing blood sugar naturally 🩺',
+    'Wheatgrass Shot daily for 30 days — watch your immunity transform! 🛡️',
+  ];
+  const tip = tips[new Date().getDay() % tips.length];
+  sendNotif('🌿 Freshy Daily Tip', tip);
+}
+
+// Check and schedule on load
+setTimeout(() => {
+  updateNotifBtn();
+  if (notifEnabled && Notification.permission === 'granted') {
+    scheduleDailyTip();
+  }
+}, 3000);
+// ══ GOOGLE SHEETS LOGGING ══
+const SHEETS_URL = "https://script.google.com/macros/s/AKfycbz_0-dlI76Y5yuTCNIpTo3WCHcP4CNzCbOP6DHFgONFiSVdLrvBdq9Ma6J2PbdFZKd6WQ/exec";
+
+function logToSheets(message, reply) {
+  try {
+    const customer = currentCustomer || {};
+    fetch(SHEETS_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        session_id: localStorage.getItem('of_session') || 'guest',
+        customer_name: customer.name || 'Guest',
+        customer_phone: customer.phone || '',
+        customer_goal: customer.goal || '',
+        message: message,
+        reply: reply
+      })
+    });
+  } catch(e) {
+    console.log('Sheets log error:', e);
+  }
+}
+
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js')
@@ -1562,19 +1908,57 @@ function updateCartUI() {
       </div>`;
   });
 
-  const delivery = total >= 200 ? 0 : 30;
+  const delivery = total >= 300 ? 0 : total >= 150 ? 30 : 99;
   const grand = total + delivery;
 
   html += `
     <div class="cart-summary">
       <div class="cs-row"><span>Subtotal</span><span class="cs-val">₹${total}</span></div>
       <div class="cs-row"><span>Delivery</span><span class="cs-val">${delivery === 0 ? 'Free 🎉' : '₹' + delivery}</span></div>
-      ${delivery > 0 ? `<div class="cs-row" style="font-size:0.6rem;color:rgba(90,173,114,0.6)"><span>Add ₹${200-total} more for free delivery</span></div>` : ''}
+      ${total < 300 && total >= 150 ? `<div class="cs-row" style="font-size:0.6rem;color:rgba(90,173,114,0.6)"><span>Add ₹${300-total} more for free delivery</span></div>` : ''}
+      ${total < 150 ? `<div class="cs-row" style="font-size:0.6rem;color:rgba(224,85,85,0.7)"><span>Minimum order ₹150 for delivery</span></div>` : ''}
       <div class="cs-row total"><span>Total</span><span class="cs-val">₹${grand}</span></div>
     </div>
-    <button class="order-btn" onclick="placeOrder()">Place Order via WhatsApp</button>`;
+
+    <!-- Delivery Address -->
+    <div class="delivery-section">
+      <div class="ds-title">📍 Delivery Address</div>
+      <textarea class="ds-input" id="deliveryAddress" placeholder="House / Flat no, Building name, Street, Area, Landmark..." rows="3"></textarea>
+    </div>
+
+    <!-- Payment Method -->
+    <div class="delivery-section">
+      <div class="ds-title">💳 Payment Method</div>
+      <div class="payment-options">
+        <div class="pay-opt active" id="pay-cod" onclick="selectPayment('cod')">
+          <span class="pay-icon">💵</span>
+          <div>
+            <div class="pay-name">Cash on Delivery</div>
+            <div class="pay-sub">Pay when order arrives</div>
+          </div>
+        </div>
+        <div class="pay-opt" id="pay-upi" onclick="selectPayment('upi')">
+          <span class="pay-icon">📱</span>
+          <div>
+            <div class="pay-name">UPI / GPay / PhonePe</div>
+            <div class="pay-sub">Pay before delivery</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="order-btn" onclick="placeOrder()">
+      🛵 Place Order · ₹${grand}
+    </button>
+    <div style="text-align:center;font-size:0.6rem;font-weight:300;color:rgba(168,196,176,0.4);margin-top:8px">
+      Order will be confirmed via WhatsApp
+    </div>`;
 
   content.innerHTML = html;
+
+  // Restore payment selection
+  const saved = localStorage.getItem('of_payment') || 'cod';
+  selectPayment(saved, false);
 }
 
 function changeQty(name, delta) {
@@ -1583,11 +1967,51 @@ function changeQty(name, delta) {
   updateCartUI();
 }
 
+let selectedPayment = 'cod';
+
+function selectPayment(method, save = true) {
+  selectedPayment = method;
+  if (save) localStorage.setItem('of_payment', method);
+  document.querySelectorAll('.pay-opt').forEach(el => el.classList.remove('active'));
+  const el = document.getElementById('pay-' + method);
+  if (el) el.classList.add('active');
+}
+
 function placeOrder() {
-  const items = Object.entries(cart).map(([n,i]) => `${i.qty}x ${n} (₹${i.price*i.qty})`).join('%0A');
   const total = Object.values(cart).reduce((s,i) => s+i.price*i.qty, 0);
-  const msg = `Hello Only Fresh! 🌿%0A%0AMy Order:%0A${items}%0A%0ATotal: ₹${total}%0A%0AThank you!`;
-  window.open(`https://wa.me/91XXXXXXXXXX?text=${msg}`, '_blank');
+  if (total === 0) { showToast('❌ Cart is empty!'); return; }
+  if (total < 150) { showToast('❌ Minimum order ₹150 for delivery'); return; }
+
+  const address = document.getElementById('deliveryAddress')?.value.trim();
+  if (!address) {
+    document.getElementById('deliveryAddress')?.focus();
+    showToast('📍 Please enter delivery address!');
+    return;
+  }
+
+  const delivery = total >= 300 ? 0 : 30;
+  const grand = total + delivery;
+  const payMethod = selectedPayment === 'upi' ? 'UPI / GPay / PhonePe' : 'Cash on Delivery';
+  const customerName = currentCustomer?.name || 'Customer';
+  const customerPhone = currentCustomer?.phone || '';
+
+  // Build WhatsApp message
+  const items = Object.entries(cart)
+    .map(([n,i]) => `  • ${i.qty}x ${n} — ₹${i.price*i.qty}`)
+    .join('%0A');
+
+  const msg = `🌿 *New Order — Only Fresh*%0A%0A` +
+    `👤 *Customer:* ${customerName}${customerPhone ? ' · ' + customerPhone : ''}%0A` +
+    `%0A📦 *Order Items:*%0A${items}%0A` +
+    `%0A💰 *Subtotal:* ₹${total}%0A` +
+    `🛵 *Delivery:* ${delivery === 0 ? 'Free' : '₹' + delivery}%0A` +
+    `✅ *Total:* ₹${grand}%0A` +
+    `%0A📍 *Delivery Address:*%0A${address.replace(/\n/g,'%0A')}%0A` +
+    `%0A💳 *Payment:* ${payMethod}%0A` +
+    `%0APlease confirm the order! 🙏`;
+
+  window.open(`https://wa.me/917019542227?text=${msg}`, '_blank');
+  showToast('✅ Order sent via WhatsApp!');
 }
 
 // ══ TOAST ══
@@ -1623,7 +2047,7 @@ const BRAIN = [
   },
   {
     keys: ['menu','full menu','what do you have','all items','food','what can i order','show me menu','price','prices','how much','cost','show menu'],
-    reply: `📋 <strong>Only Fresh — Full Menu</strong><br><br>⭐ <strong>SATTU (Signature)</strong><br>🥛 Sattu Power Shake — ₹80<br>🍵 Sattu Detox Drink — ₹70<br>🥗 Sattu Protein Bowl — ₹150<br>🫓 Sattu Paratha — ₹90<br>🟤 Sattu Laddoo 2pcs — ₹60<br><br>🥤 <strong>DETOX JUICES</strong><br>Green Detox ₹100 | Beetroot Boost ₹110<br>Orange Glow ₹90 | Watermelon Mint ₹80<br>ABC Juice ₹120 | Wheatgrass Shot ₹80<br>Karela Amla ₹110 | Pineapple Ginger ₹100<br><br>🍱 <strong>TIFFIN</strong> (7-11AM & 4-9PM)<br>Idli 2pcs ₹60 | Masala Dosa ₹80<br>Upma ₹60 | Poha ₹50 | Vada 2pcs ₹70<br>Tiffin Combo ₹100<br><br>🥗 <strong>BOWLS</strong><br>Garden Salad ₹120 | Sprouts Bowl ₹110<br>Protein Bowl ₹150 | Fruit Bowl ₹130<br><br>🥤 <strong>SMOOTHIES & HOT</strong><br>Banana Oat ₹120 | Mango Ginger ₹130<br>Tulsi Kadha ₹60 | Ginger Lemon Tea ₹50<br><br>Want a recommendation based on your health goal? 💚`
+    reply: `📋 <strong>Only Fresh — Full Menu</strong><br><br>⭐ <strong>SATTU (Signature)</strong><br>🥛 Sattu Power Shake — ₹80<br>🍵 Sattu Detox Drink — ₹70<br>🥗 Sattu Protein Bowl — ₹150<br>🟤 Sattu Laddoo 2pcs — ₹60<br><br>🥤 <strong>DETOX JUICES</strong><br>Green Detox ₹100 | Beetroot Boost ₹110<br>Orange Glow ₹90 | Watermelon Mint ₹80<br>ABC Juice ₹120 | Wheatgrass Shot ₹80<br>Karela Amla ₹110 | Pineapple Ginger ₹100<br><br>🍱 <strong>MORNING TIFFIN</strong> (7-11AM)<br>Moong Dal Chilla ₹80 | Idli 2pcs ₹60<br>Masala Dosa ₹80 | Upma ₹60 | Tiffin Combo ₹100<br><br>🍚 <strong>DAL + RICE COMBOS</strong> (11AM-4PM)<br>With White Rice: Moong ₹130 | Toor ₹130 | Masoor ₹130 | Chana ₹140 | Mixed Dal ₹150 | Dal Fry ₹150<br>With Brown Rice (+₹20): Mixed Dal ₹170 | Dal Fry ₹170<br>With Millet Rice (+₹30): Mixed Dal ₹180 | Moong Dal ₹160<br><br>🥗 <strong>BOWLS</strong><br>Garden Salad ₹120 | Sprouts Bowl ₹110 | Fruit Bowl ₹130<br><br>🥤 <strong>SMOOTHIES & HOT</strong><br>Banana Oat ₹120 | Mango Ginger ₹130<br>Tulsi Kadha ₹60 | Ginger Lemon Tea ₹50<br><br>Want a recommendation based on your health goal? 💚`
   },
   {
     keys: ['weight','lose','fat','slim','diet','reduce','calorie','losing weight','weight loss','fat loss','reduce weight'],
@@ -1707,7 +2131,7 @@ if (!localStorage.getItem('of_session')) {
 
 // ══ GROQ DIRECT — permanent, no ngrok, no Colab needed ══
 const GROQ_API_KEY = "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";
-const GROQ_MODEL = "llama-3.3-70b-versatile";
+const GROQ_MODEL = "llama-3.1-8b-instant";
 
 const FRESHY_SYSTEM = (
   "You are Freshy, a fun friendly person who loves food, nutrition and good conversations. " +
@@ -1798,7 +2222,7 @@ function quickSend(el, text) {
 
 async function processChat(text) {
   addBubble(text, 'user');
-  trackChat(text); // ← track every chat message
+  trackChat(text);
   const tid = showTypingIndicator();
   document.getElementById('sendBtn').disabled = true;
   const reply = await findReply(text);
@@ -1806,6 +2230,7 @@ async function processChat(text) {
   addBubble(reply, 'bot');
   addFollowChips();
   document.getElementById('sendBtn').disabled = false;
+  logToSheets(text, reply); // ← save every chat to Google Sheets
 }
 
 function addBubble(text, type) {

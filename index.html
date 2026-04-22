@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Only Fresh">
 <meta name="description" content="Only Fresh — Fresh food, detox juices & sattu. Hosur Road, Bengaluru.">
-<link rel="manifest" href="/manifest.json">
+<link rel="manifest" href="/Onlyfresh/manifest.json">
 <!-- Preconnect for faster loading -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1812,8 +1812,8 @@ function logToSheets(message, reply) {
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
-      .then(reg => console.log('✅ SW registered'))
+    navigator.serviceWorker.register('/Onlyfresh/sw.js', { scope: '/Onlyfresh/' })
+      .then(reg => console.log('✅ SW registered', reg.scope))
       .catch(err => console.log('SW error:', err));
   });
 }
@@ -2045,11 +2045,11 @@ const BRAIN = [
   },
   {
     keys: ['weight','lose','fat','slim','diet','reduce','calorie','losing weight','weight loss','fat loss','reduce weight'],
-    reply: `⚖️ <strong>Only Fresh Weight Loss Plan:</strong><br><br>🌅 <strong>Morning:</strong><br>Sattu Detox Drink ₹70 — high fibre, fills you up, boosts metabolism<br><br>☀️ <strong>Midday:</strong><br>Green Detox Juice ₹100 — flushes toxins, very low calorie<br><br>🌆 <strong>Meal:</strong><br>Sprouts Power Bowl ₹110 — high protein, low carb, filling<br><br><strong>Why this works:</strong><br>✅ Sattu keeps you full 4-5 hours — no snacking!<br>✅ Green Detox curbs appetite naturally<br>✅ Zero sugar in everything<br>✅ All real ingredients, no processed food<br><br>💡 <em>Try Sattu Detox every morning for 2 weeks. Most people see a real difference!</em><br><br>Want a full day meal plan from our menu? 🌿`
+    reply: `⚖️ <strong>Weight Loss Combo — ₹280</strong><br>Masoor Dal + Millet Rice + Green Detox<br><br>High fibre · Low calorie · Maximum satiety · Zero refined carbs<br>Millet rice has 40% lower glycemic index than white rice.<br>Keeps you full 4-5 hours. No snacking. No energy crash.<br><br>Morning habit: Sattu Detox Drink ₹70 on empty stomach — boosts metabolism.<br><br>How many kg are you looking to lose?`
   },
   {
     keys: ['gym','muscle','workout','protein','fitness','bodybuilding','strength','post workout','pre workout','exercise','training','build muscle','gains'],
-    reply: `💪 <strong>Only Fresh Gym Plan:</strong><br><br>🏋️ <strong>Pre-Workout (30 mins before):</strong><br>Sattu Power Shake ₹80 — sustained energy, no crash<br>Beetroot Boost ₹110 — increases stamina naturally!<br><br>💪 <strong>Post-Workout (within 1 hour):</strong><br>Sattu Protein Bowl ₹150 — 25g+ protein, muscle recovery<br>ABC Juice ₹120 — antioxidants, reduces inflammation<br><br><strong>Why Sattu beats whey protein:</strong><br>✅ 25g protein per 100g — same as whey<br>✅ Zero artificial additives<br>✅ Better digestion than whey<br>✅ Costs 5x less than supplements<br>✅ 100% natural, made in India 🇮🇳<br><br>💡 <em>Many gym goers near Kudlu Gate have switched from whey to Sattu Shake!</em><br><br>What's your workout timing? I'll suggest the perfect combo! 🏋️`
+    reply: `💪 <strong>Gym Combo — ₹280</strong><br>Mixed Dal + Brown Rice + Beetroot Boost<br><br>26g protein · 45% daily iron · Nitric oxide boost for stamina<br>Better nutrition than most protein shakes at half the price.<br><br>Pre-workout: Sattu Power Shake ₹80 — sustained energy, zero crash.<br>Post-workout window is 45 mins — Gym Combo covers it completely.<br><br>What is your workout timing — morning or evening?`
   },
   {
     keys: ['energy','tired','fatigue','boost','active','morning energy','afternoon slump','focus','productive','low energy','no energy'],
@@ -2057,63 +2057,63 @@ const BRAIN = [
   },
   {
     keys: ['diabetes','diabetic','sugar','blood sugar','glucose','insulin','low gi','glycemic','sugar free','sugar level'],
-    reply: `🩺 <strong>Diabetic-Safe Options at Only Fresh:</strong><br><br>✅ <strong>Sattu Power Shake (unsweetened) ₹80</strong><br>Low glycemic index — no blood sugar spike. High protein. Nutritionists recommend sattu for diabetics.<br><br>✅ <strong>Karela Amla Detox ₹110</strong><br>Bitter gourd naturally helps manage blood sugar. Zero sugar added.<br><br>✅ <strong>Sprouts Power Bowl ₹110</strong><br>Complex carbs, high fibre — slow digestion, no sugar spike.<br><br>✅ <strong>Green Detox ₹100</strong><br>All vegetables, zero fruit sugar, maximum nutrients.<br><br>⚠️ <em>Everything at Only Fresh is zero added sugar. We never use artificial sweeteners either.</em><br><br>💡 Note: This is nutrition guidance, not medical advice. Consult your doctor for medical decisions.<br><br>Would you like a full day diabetic-friendly plan? 🌿`
+    reply: `🩺 <strong>Diabetic Safe Combo — ₹270</strong><br>Moong Dal + Millet Rice + Karela Amla Juice<br><br>Low GI · Zero refined carbs · Blood sugar control · Safe daily<br>Millet rice — 40% lower glycemic index than white rice.<br>Karela Amla — naturally manages blood sugar, zero sugar added.<br>Everything at Only Fresh is zero added sugar. No artificial sweeteners.<br><br>Are you Type 1 or Type 2? I can give you the exact daily plan.`
   },
   {
-    keys: ['immunity','immune','sick','cold','cough','fever','vitamin c','infection','flu','health boost','immunity boost','fall sick'],
-    reply: `🛡️ <strong>Only Fresh Immunity Boosters:</strong><br><br>☕ <strong>Tulsi Kadha ₹60</strong><br>Ayurvedic immunity powerhouse. Anti-viral, anti-bacterial. Daily habit for strong immunity.<br><br>🍊 <strong>Orange Glow ₹90</strong><br>Fresh orange + turmeric + black pepper. Vitamin C + curcumin = powerful immune duo.<br><br>🌱 <strong>Wheatgrass Shot ₹80</strong><br>30 days daily = visible immunity improvement. Rich in chlorophyll and antioxidants.<br><br>🧃 <strong>ABC Juice ₹120</strong><br>Apple+Beetroot+Carrot — antioxidant powerhouse in one glass.<br><br>💡 <em>Immunity combo: Tulsi Kadha in morning + Wheatgrass Shot midday. Try for 2 weeks!</em><br><br>Are you looking to prevent illness or recover from something? 🌿`
-  },
-  {
-    keys: ['skin','glow','face','complexion','acne','beauty','hair','skin glow','clear skin','natural beauty','skin care'],
-    reply: `✨ <strong>Only Fresh Beauty from Inside:</strong><br><br>🧃 <strong>ABC Juice ₹120</strong><br>Apple+Beetroot+Carrot — beta carotene gives your skin a natural glow from within.<br><br>🍉 <strong>Watermelon Mint ₹80</strong><br>95% water content — best natural hydrator. Hydrated skin = healthy skin.<br><br>🥤 <strong>Green Detox ₹100</strong><br>Spinach+Amla+Cucumber — flushes toxins that cause acne and dull skin.<br><br>💡 <em>Freshy tip: Drink Green Detox every morning for 30 days. Skin changes are visible by week 3!</em><br><br>Beauty is nutrition first. What's your main skin concern? ✨`
-  },
-  {
-    keys: ['location','where','address','how to reach','find you','directions','hosur road','kudlu gate','nandi toyota','map'],
-    reply: `📍 <strong>Find Only Fresh:</strong><br><br>🗺️ <strong>Hosur Road, Kudlu Gate, Bengaluru</strong><br>Near Nandi Toyota showroom<br><br>🕐 <strong>Timings:</strong><br>7:00 AM – 9:00 PM<br>Open all 7 days including Sundays & holidays<br><br>🚗 Easy parking available<br>📱 Order on Zomato or WhatsApp<br><br>💡 <em>We're right on the main road — can't miss us!</em><br><br>Are you coming in or would you like to order online? 🌿`
-  },
-  {
-    keys: ['timing','time','open','close','hours','when','what time','working hours','open today','open now'],
-    reply: `🕐 <strong>Only Fresh Timings:</strong><br><br>⏰ <strong>7:00 AM – 9:00 PM</strong><br>Every single day — no weekly offs, no holidays!<br><br>🌅 <strong>Breakfast</strong> (7–11AM): Full tiffin + juices + sattu<br>☀️ <strong>Lunch</strong> (11AM–3PM): Bowls + juices + sattu<br>🌆 <strong>Evening</strong> (3–9PM): Juices + sattu + smoothies<br><br>💡 <em>We're early birds just like you! Fresh ingredients prepared from 6:30 AM every day.</em><br><br>What time are you usually free to visit? 😊`
-  },
-  {
-    keys: ['book','table','reservation','seat','booking','reserve','book table','book a table'],
-    reply: `🪑 <strong>Table Booking at Only Fresh:</strong><br><br>I'd love to get your table ready! Please share:<br><br>📅 Which date?<br>🕐 What time?<br>👥 How many people?<br><br>Or WhatsApp us directly and we'll confirm in minutes! We'll have your table ready and something fresh waiting for you. 😊<br><br>Any special occasion we should know about? 🎉`
-  },
-  {
-    keys: ['recommend','suggest','what should i','what to order','not sure','help me choose','first time','new here','best item','best seller','popular'],
-    reply: `🌿 <strong>Freshy's Top Picks for You:</strong><br><br>🥛 <strong>Start with Sattu Power Shake ₹80</strong><br>Our hero item. Most first-timers are blown away by how filling and tasty it is!<br><br>🥤 <strong>Add Green Detox Juice ₹100</strong><br>The perfect pair. Sattu + Green Detox = complete nutrition in one visit.<br><br>🟤 <strong>Try Sattu Laddoo ₹60</strong><br>Take-home energy snack. Natural, delicious, and lasts all day.<br><br>💡 <em>This combo is what I'd order on Day 1. Simple, powerful, and you'll come back for more!</em><br><br>Is this your first time at Only Fresh? I'll make sure Freshy guides you perfectly! 😊`
+    keys: ['sattu','what is sattu','satu','sattu shake','sattu bowl','sattu laddoo','sattu detox','tell me about sattu','sattu benefits'],
+    reply: `⭐ <strong>Sattu — 25g protein per 100g</strong><br>More protein than eggs. Better digestion than whey. Costs 5x less than supplements.<br><br>Low GI — safe for diabetics. Natural cooling. Zero additives.<br>Roasted Bengal gram — one ingredient, nothing else.<br><br>Sattu Power Shake ₹80 · Sattu Detox ₹70 · Sattu Protein Bowl ₹150 · Sattu Laddoo ₹60<br><br>Which goal — gym, weight loss, or energy?`
   },
   {
     keys: ['combo','combination','together','pair','what goes with','bundle','meal deal'],
-    reply: `🌿 <strong>Best Combos at Only Fresh:</strong><br><br>💪 <strong>Power Start Combo</strong><br>Sattu Shake + Idli 2pcs = ₹140 (Save ₹20)<br>Perfect morning fuel<br><br>⚡ <strong>Detox Duo</strong><br>Green Detox + Wheatgrass Shot = ₹180 (Save ₹20)<br>Maximum cleanse<br><br>🏋️ <strong>Gym Pack</strong><br>Sattu Protein Bowl + Beetroot Boost = ₹260 (Save ₹40)<br>Pre or post workout perfection<br><br>🌅 <strong>Office Tiffin</strong><br>Tiffin Combo + Any Juice = ₹200<br>Complete balanced meal<br><br>Which combo matches your goal today? 😊`
-  },
-  {
-    keys: ['feedback','complaint','bad','problem','wrong','issue','not good','taste','quality','unhappy','disappointed'],
-    reply: `🙏 Thank you so much for sharing this with me — feedback is how we get better!<br><br>I'm genuinely sorry if something wasn't right. At Only Fresh, every order should be perfect. If anything fell short, please know we take it very seriously.<br><br>I'll make sure this reaches the team directly. Could you share:<br>📝 What item was it?<br>🕐 When did you order?<br><br>We want to make it right for you. Your trust means everything to us. 💚`
-  },
-  {
-    keys: ['tiffin','idli','dosa','upma','poha','vada','south indian','breakfast','morning food'],
-    reply: `🍱 <strong>Only Fresh Tiffin</strong> — South Indian goodness, made fresh!<br><br>Available: <strong>7AM–11AM</strong> (morning) and <strong>4PM–9PM</strong> (evening)<br><br>⚪ Idli 2pcs + sambar + chutney — ₹60<br>🫓 Masala Dosa — ₹80<br>🫓 Plain Dosa — ₹60<br>🍚 Rava Upma — ₹60<br>🟡 Poha — ₹50<br>🟠 Vada 2pcs — ₹70<br>🍱 Mini Tiffin Combo (2 Idli + 1 Vada) — ₹100<br><br>💡 <em>Our tiffin batter is freshly prepared every morning — no yesterday's batter here!</em><br><br>Combine with a Sattu Shake for the perfect complete breakfast 😊 What time do you usually eat breakfast?`
+    reply: `<strong>Only Fresh Combos — built on nutrition data:</strong><br><br>🌅 Morning Start ₹160 — Moong Dal Chilla + Sattu Shake — 35g protein<br>☀️ Lunch Power ₹230 — Dal + Rice + Green Detox — 22g protein<br>💪 Gym Combo ₹280 — Mixed Dal + Brown Rice + Beetroot Boost — 26g protein<br>🩺 Diabetic Safe ₹270 — Moong Dal + Millet Rice + Karela Amla — Low GI<br>⚖️ Weight Loss ₹280 — Masoor Dal + Millet Rice + Green Detox — High fibre<br><br>Which goal are you ordering for?`
   },
   {
     keys: ['hi','hello','hey','good morning','good evening','good afternoon','namaste','hii','helo','hai'],
-    reply: `Hey! 👋 Welcome to <strong>Only Fresh</strong>! So happy you're here! 🌿<br><br>I'm <strong>Freshy</strong> — your nutrition friend, brand guide, and front desk all in one!<br><br>I can help you with:<br>🥛 What to eat for your health goal<br>📋 Our full menu and prices<br>📍 Location and timings<br>🪑 Table booking<br>💪 Nutrition advice<br><br>What brings you to Only Fresh today? 😊`
+    reply: `Hey! I'm Freshy — Only Fresh nutrition assistant.<br><br>Tell me your health goal and I give you the exact combo with nutrition data.<br><br>Gym · Weight loss · Diabetes · Energy · Immunity · Skin glow<br><br>What are you eating for?`
+  },
+  {
+    keys: ['recommend','suggest','what should i','what to order','not sure','help me choose','first time','new here','best item','best seller','popular'],
+    reply: `Most ordered items with reasons:<br><br>Sattu Power Shake ₹80 — 25g protein, fills you till lunch, better than whey<br>Green Detox ₹100 — visible skin and energy change in 2 weeks daily<br>Gym Combo ₹280 — 26g protein, 45% iron, better than protein shake at half cost<br><br>Tell me one thing — gym, weight loss, energy, or general health?`
   },
   {
     keys: ['thank','thanks','thank you','awesome','great','amazing','love it','perfect','wonderful','helpful','good'],
-    reply: `💚 That means the world to me — thank you so much!<br><br>At Only Fresh, making you feel good is everything we do — from the food to this little chat! 🌿<br><br>Is there anything else Freshy can help you with? Whether it's nutrition advice, menu questions, or just a food recommendation — I'm always here! 😊`
+    reply: `Noted. What else — menu, nutrition data, or combo recommendation?`
+  },
+  {
+    keys: ['feedback','complaint','bad','problem','wrong','issue','not good','taste','quality','unhappy','disappointed'],
+    reply: `Tell me exactly what was wrong — item name and what the issue was.<br>We fix problems with data, not apologies.<br><br>What did you order and what was the issue?`
+  },
+  {
+    keys: ['tiffin','idli','dosa','upma','moong','chilla','south indian','breakfast','morning food'],
+    reply: `🍱 <strong>Morning Tiffin — 7AM to 11AM</strong><br><br>Moong Dal Chilla ₹80 — highest protein tiffin, fresh batter daily<br>Idli 2pcs ₹60 · Masala Dosa ₹80 · Upma ₹60 · Tiffin Combo ₹100<br><br>Best morning combo: Moong Dal Chilla + Sattu Shake = ₹160, 35g protein.<br>More protein than 3 eggs at a fraction of the cost.<br><br>What time do you usually eat breakfast?`
   },
   {
     keys: ['why only fresh','different','unique','special','why choose','what makes you','better than','stand out'],
-    reply: `✨ <strong>What makes Only Fresh truly different:</strong><br><br>🌿 <strong>Sattu — Our Differentiator</strong><br>No other food bar in Kudlu Gate area serves sattu. It's our signature and nobody can copy our recipe and care.<br><br>🥤 <strong>Made To Order — Always</strong><br>Every juice is pressed when you order. Not an hour ago. Not yesterday. Right now.<br><br>🚫 <strong>What we never do:</strong><br>❌ No frozen ingredients<br>❌ No added sugar in juices<br>❌ No reheating<br>❌ No artificial anything<br><br>💚 <strong>What we always do:</strong><br>✅ Fresh daily sourcing<br>✅ Real ingredients you can see<br>✅ Made with genuine care<br><br>💡 <em>We're not just a food bar. We're your health partner in Bengaluru.</em><br><br>What matters most to you in a food place? 🌿`
+    reply: `<strong>Why Only Fresh:</strong><br><br>Sattu — 25g protein, nobody else in Kudlu Gate serves it as hero product.<br>Every juice pressed when you order — not an hour ago, not yesterday.<br>Zero frozen. Zero added sugar. Zero reheating.<br>Dal Rice combos made fresh 11AM–4PM — not hotel style, home style.<br><br>Eat Fit equivalent meal costs ₹350–450. Ours is ₹130–280 with same or better nutrition.<br><br>What specifically are you comparing us to?`
+  },
+  {
+    keys: ['immunity','immune','sick','cold','cough','fever','vitamin c','infection','flu','health boost','immunity boost','fall sick'],
+    reply: `🛡️ <strong>Immunity — data based:</strong><br><br>Tulsi Kadha ₹60 — anti-viral, anti-bacterial, Ayurvedic. Daily habit.<br>Orange Glow ₹90 — Vitamin C + curcumin. Proven immune combination.<br>Wheatgrass Shot ₹80 — 30 days daily shows measurable immunity improvement.<br>ABC Juice ₹120 — antioxidant powerhouse in one glass.<br><br>Best combo: Tulsi Kadha morning + Wheatgrass Shot midday = ₹140 daily.<br><br>Are you trying to prevent illness or recover from something?`
+  },
+  {
+    keys: ['skin','glow','face','complexion','acne','beauty','hair','skin glow','clear skin','natural beauty','skin care'],
+    reply: `✨ <strong>Skin — data based:</strong><br><br>ABC Juice ₹120 — beta carotene gives natural glow from inside. Visible by week 3.<br>Green Detox ₹100 — flushes toxins that cause acne and dull skin.<br>Watermelon Mint ₹80 — 95% water. Hydrated cells = healthy skin.<br><br>30 day protocol: Green Detox every morning = ₹3,000/month.<br>One dermat visit in Bengaluru = ₹1,500–3,000. This works longer.<br><br>What is your main skin concern — acne, dullness, or dryness?`
+  },
+  {
+    keys: ['location','where','address','how to reach','find you','directions','hosur road','kudlu gate','nandi toyota','map','timing','time','open','close','hours','when','what time'],
+    reply: `📍 Hosur Road, Kudlu Gate, Bengaluru — near Nandi Toyota.<br>⏰ 7AM–9PM, all 7 days.<br><br>Morning: Tiffin + Juices + Sattu<br>Lunch: Dal Rice Combos 11AM–4PM<br>Evening: Juices + Sattu + Smoothies<br><br>Order directly on this app — delivery available nearby.`
+  },
+  {
+    keys: ['expensive','costly','too much','cheap','discount','offer','afford','budget'],
+    reply: `📊 <strong>Value comparison:</strong><br><br>Gym Combo ₹280 — 26g protein + iron + nitric oxide<br>GNC protein shake — ₹300–500 per serving, artificial ingredients<br><br>Weight Loss Combo ₹280 — complete meal, high fibre, low calorie<br>Eat Fit equivalent — ₹350–450 same nutrition<br><br>Sattu Shake ₹80 — 25g protein<br>Whey protein serving — ₹150–200 with chemical additives<br><br>What is your budget per meal?`
   }
 ];
 
 // Default fallback responses
 const DEFAULTS = [
-  `🌿 Great question! I'd love to help. Could you tell me a bit more?<br><br>For example, are you asking about our <strong>menu</strong>, <strong>nutrition advice</strong>, <strong>health goals</strong>, or something about <strong>Only Fresh</strong>?<br><br>I'm Freshy — your nutrition friend here! Ask me anything 😊`,
-  `Hmm, let me think about that! 🌿<br><br>I know everything about <strong>Only Fresh</strong> — our sattu items, detox juices, tiffin, health goals, location, and more.<br><br>Could you rephrase your question? Or just tap one of the quick buttons below to get started! 😊`,
-  `💚 Good question! I want to make sure I give you the right answer.<br><br>Try asking me things like:<br>• <em>"What is sattu?"</em><br>• <em>"Best juice for weight loss"</em><br>• <em>"Show me the menu"</em><br>• <em>"Where are you located?"</em><br><br>I'm here to help! 🌿`
+  `Tell me your health goal — gym, weight loss, diabetes, energy, immunity, or skin glow.<br>I will give you the exact combo with nutrition data and price.`,
+  `I need one input from you — what are you eating for today?<br>Gym · Weight loss · Diabetes · Energy · General health`,
+  `Not sure what you mean. Try asking:<br>• "Best combo for gym"<br>• "Weight loss food"<br>• "Diabetic safe options"<br>• "Show me the menu"<br>• "What is sattu"`
 ];
 
 let defaultIndex = 0;
@@ -2320,12 +2320,35 @@ let deferredPrompt;
 window.addEventListener('beforeinstallprompt', e => {
   e.preventDefault();
   deferredPrompt = e;
-  checkInstallPrompt();
+  // Show banner after 3 seconds
+  setTimeout(() => {
+    document.getElementById('installBanner').classList.add('show');
+  }, 3000);
 });
 
+// iOS install detection
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+const isInStandaloneMode = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+
 function checkInstallPrompt() {
+  if (isInStandaloneMode) {
+    // Already installed — hide banner
+    const b = document.getElementById('installBanner');
+    if (b) b.style.display = 'none';
+    return;
+  }
+
   if (deferredPrompt) {
     document.getElementById('installBanner').classList.add('show');
+  } else if (isIOS) {
+    // Show iOS-specific instructions
+    const b = document.getElementById('installBanner');
+    if (b) {
+      b.querySelector('.ib-text').textContent = 'Tap Share → Add to Home Screen to install Only Fresh';
+      b.querySelector('.ib-btn').textContent = 'Got it';
+      b.querySelector('.ib-btn').onclick = () => b.classList.remove('show');
+      setTimeout(() => b.classList.add('show'), 3000);
+    }
   }
 }
 
@@ -2335,11 +2358,18 @@ function installApp() {
     deferredPrompt.userChoice.then(r => {
       if (r.outcome === 'accepted') {
         document.getElementById('installBanner').classList.remove('show');
+        showToast('✅ Only Fresh installed!');
       }
       deferredPrompt = null;
     });
   }
 }
+
+// Check on app load
+window.addEventListener('appinstalled', () => {
+  document.getElementById('installBanner').classList.remove('show');
+  showToast('✅ Only Fresh installed on your phone!');
+});
 
 </script>
 </body>

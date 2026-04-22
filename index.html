@@ -365,10 +365,21 @@
   .content {
     flex: 1;
     overflow-y: auto;
+    overflow-x: hidden;
     padding-bottom: calc(var(--tab-h) + 16px);
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
-    transform: translateZ(0); /* GPU acceleration */
+    width: 100%;
+    max-width: 480px;
+    box-sizing: border-box;
+    flex-direction: column;
+  }
+
+  #tab-home {
+    display: block;
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 100%;
   }
 
   /* ══ HOME SCREEN ══ */
@@ -1822,17 +1833,39 @@ if ('serviceWorker' in navigator) {
 let currentTab = 'home';
 
 function switchTab(tab) {
-  document.getElementById(`tab-${currentTab}`).style.display = 'none';
-  document.getElementById(`tab-btn-${currentTab}`).classList.remove('active');
-  document.getElementById(`tab-${tab}`).style.display = 'flex';
-  document.getElementById(`tab-btn-${tab}`).classList.add('active');
+  // Hide all tabs
+  ['home','menu','chat','nutrition','cart'].forEach(t => {
+    const el = document.getElementById(`tab-${t}`);
+    if (el) el.style.display = 'none';
+    const btn = document.getElementById(`tab-btn-${t}`);
+    if (btn) btn.classList.remove('active');
+  });
+
+  // Show selected tab
+  const el = document.getElementById(`tab-${tab}`);
+  if (el) {
+    // Home uses block for proper single column scroll
+    // All others use flex column
+    el.style.display = tab === 'home' ? 'block' : 'flex';
+    if (tab !== 'home') el.style.flexDirection = 'column';
+  }
+
+  const btn = document.getElementById(`tab-btn-${tab}`);
+  if (btn) btn.classList.add('active');
+
   currentTab = tab;
-  trackTab(tab); // ← track tab views
+  trackTab(tab);
+
   if (tab === 'chat') {
     setTimeout(() => {
       const area = document.getElementById('chatArea');
-      area.scrollTop = area.scrollHeight;
+      if (area) area.scrollTop = area.scrollHeight;
     }, 100);
+  }
+
+  // Scroll home to top when returning
+  if (tab === 'home' && el) {
+    el.scrollTop = 0;
   }
 }
 
